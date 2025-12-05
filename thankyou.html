@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You - The Farm at San Benito</title>
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const logoImg = document.querySelector('.logo img');
+        if (!logoImg) return;
+        const parent = logoImg.parentElement;
+        if (parent && parent.tagName.toLowerCase() === 'a') {
+            parent.href = 'index.html';
+            parent.setAttribute('aria-label', 'Home');
+        } else {
+            const a = document.createElement('a');
+            a.href = 'index.html';
+            a.setAttribute('aria-label', 'Home');
+            a.style.display = 'inline-block';
+            parent.replaceChild(a, logoImg);
+            a.appendChild(logoImg);
+        }
+    });
+    </script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f9;
+            color: #222;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        header .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        header .logo img {
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: #008c4a;
+        }
+
+        .nav-buttons .btn {
+            display: inline-block;
+            padding: 10px 18px;
+            background: #008c4a;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        main {
+            max-width: 980px;
+            margin: 120px auto 60px;
+            padding: 0 20px;
+        }
+
+        .thank-you {
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+            text-align: center;
+        }
+
+        .thank-you h1 {
+            color: #008c4a;
+            margin: 0 0 8px 0;
+            font-size: 32px;
+        }
+
+        .thank-you p.lead {
+            margin: 0 0 24px 0;
+            font-size: 18px;
+            color: #444;
+        }
+
+        .booking-summary {
+            text-align: left;
+            margin: 0 auto 24px;
+            max-width: 760px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #e6e6e6;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 14px 18px;
+            background: #fafafa;
+            border-bottom: 1px solid #eee;
+            font-size: 16px;
+        }
+
+        .summary-row:nth-child(odd) {
+            background: #fff;
+        }
+
+        .summary-title { color: #555; }
+        .summary-value { color: #111; font-weight: 600; }
+
+        .actions {
+            margin-top: 16px;
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-ghost {
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: 1px solid #008c4a;
+            background: transparent;
+            color: #008c4a;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: none;
+            background: #008c4a;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .note {
+            color: #666;
+            font-size: 14px;
+            margin-top: 12px;
+        }
+
+        .ref {
+            display: inline-block;
+            margin-top: 6px;
+            padding: 8px 12px;
+            background: #f1fdf6;
+            color: #046a2f;
+            border-radius: 8px;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+        }
+        
+
+        /* Floating Dark Mode Button */
+        .floating-theme-btn {
+    position: fixed;
+    top: 100px;          /* distance from top (adjust as you like) */
+    right: 30px;         /* distance from right edge */
+    background: #ffffff;
+    border: none;
+    padding: 12px 15px;
+    border-radius: 50%;
+    font-size: 28px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    z-index: 9999;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.floating-theme-btn:hover {
+    transform: scale(1.15);
+}
+
+.dark-mode .floating-theme-btn {
+    background: #222;
+    color: #ffd369;
+}
+
+        /* dark mode styles */
+        body.dark-mode {
+            background-color: #0f1720;
+            color: #e0e0e0;
+        }
+        body.dark-mode header { background-color: #111827; color: #e0e0e0; }
+        body.dark-mode a { color: #7dd3fc; }
+        body.dark-mode .thank-you { background: #0b1220; box-shadow: none; border: 1px solid rgba(255,255,255,0.04); }
+        body.dark-mode .summary-row { background: transparent; border-bottom: 1px solid rgba(255,255,255,0.04); }
+        body.dark-mode .summary-title { color: #cbd5e1; }
+        body.dark-mode .summary-value { color: #e6fdf3; }
+        body.dark-mode .btn-ghost { color: #86efac; border-color: #86efac; }
+        body.dark-mode .btn-primary { background: #16a34a; }
+        body.dark-mode .ref { background: rgba(52,211,153,0.08); color: #86efac; }
+
+        :root{
+            --header-height: 68px;
+            --accent-green: #034b09;
+            --light-bg: #fff;
+            --dark-bg: #1a1a1a;
+        }
+
+        /* Dark mode base tweaks */
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: #e0e0e0;
+        }
+        body.dark-mode header {
+            background-color: #2d2d2d !important;
+            color: #e0e0e0;
+        }
+        body.dark-mode a { color: #f0f0f0; }
+        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3 { color: #e0e0e0; }
+        body.dark-mode p { color: #ffffff; }
+
+        /* Header / nav layout */
+        header {
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        .logo { display:flex; align-items:center; }
+        .logo img { height:44px; width:auto; display:block; }
+
+        nav.navbar {
+            display:flex;
+            align-items:center;
+            flex:1;
+            justify-content: center;
+        }
+        nav.navbar ul {
+            list-style:none;
+            display:flex;
+            gap: 18px;
+            margin:0;
+            padding:0;
+            align-items:center;
+        }
+        nav.navbar a {
+            text-decoration:none;
+            color: inherit;
+            font-weight:700;
+            letter-spacing:0.02em;
+        }
+
+        .nav-buttons { margin-left:auto; }
+
+        /* Hamburger (mobile) */
+        .menu-toggle {
+            display: none;
+            background: transparent;
+            border: 0;
+            cursor: pointer;
+            padding: 8px;
+            margin-left: 8px;
+        }
+        .menu-toggle .bar {
+            display:block;
+            width:22px;
+            height:2px;
+            background:#222;
+            margin:4px 0;
+            transition: transform .2s ease, opacity .2s ease;
+        }
+        body.dark-mode .menu-toggle .menu-icon { color:#fff; }
+
+        /* Mobile responsive behavior */
+        @media (max-width: 900px) {
+            /* make header compact */
+            header { padding: 0 12px; gap: 8px; }
+            nav.navbar { justify-content: flex-end; }
+            nav.navbar ul { 
+                display: none; /* hide default list on small screens */
+                position: absolute;
+                top: calc(var(--header-height) + 8px);
+                right: 12px;
+                background: var(--light-bg);
+                border-radius: 8px;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+                flex-direction: column;
+                padding: 10px;
+                min-width: 220px;
+                z-index: 1100;
+            }
+            body.dark-mode nav.navbar ul { background: #222; box-shadow: 0 8px 24px rgba(0,0,0,0.35); }
+
+            nav.navbar ul.show {
+                display:flex;
+            }
+            nav.navbar ul li { padding: 8px 6px; }
+            nav.navbar ul a { display:block; width:100%; }
+
+            .menu-toggle { display:inline-flex; align-items:center; }
+
+            /* collapse nav-buttons into menu (so header stays compact) */
+            .nav-buttons { display:none; }
+        }
+
+        /* Make a few main sections adapt nicely */
+        .hero { padding-top: var(--header-height); min-height: 60vh; background-size:cover; }
+        .about-section { flex-direction: column; gap: 20px; padding: 20px; }
+        @media (min-width: 900px) {
+            .about-section { flex-direction: row; padding: 40px 60px; }
+        }
+
+        /* Ensure virtual-tour button moves on small screens */
+        .virtual-tour-btn { left: 50px; bottom: 80px; }
+        @media (max-width:480px){
+            .virtual-tour-btn{ left: 12px; bottom: 12px; width: 88px; height: 88px; font-size: 11px; }
+        }
+    </style>
+
+    <script>
+        // Menu toggle script: waits for DOM and then wires the hamburger to the nav.
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggle = document.getElementById('menuToggle');
+            const navList = document.getElementById('mainNavList');
+
+            if (!toggle || !navList) return;
+
+            // update aria-expanded and show/hide
+            function setOpen(open) {
+                if (open) {
+                    navList.classList.add('show');
+                    toggle.setAttribute('aria-expanded', 'true');
+                    // prevent body scroll when menu open on small screens
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    navList.classList.remove('show');
+                    toggle.setAttribute('aria-expanded', 'false');
+                    document.body.style.overflow = '';
+                }
+            }
+
+            toggle.addEventListener('click', function (e) {
+                const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+                setOpen(!isOpen);
+            });
+
+            // close menu when clicking outside or pressing Escape
+            document.addEventListener('click', function (e) {
+                if (!navList.classList.contains('show')) return;
+                if (toggle.contains(e.target) || navList.contains(e.target)) return;
+                setOpen(false);
+            });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') setOpen(false);
+            });
+
+            // close menu on link click (mobile)
+            navList.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="images/logo1.png" alt="Resort Logo" style="height:50px;">
+        </div>
+        <!-- mobile hamburger -->
+        <button id="menuToggle" class="menu-toggle" aria-controls="mainNavList" aria-expanded="false" aria-label="Toggle navigation"
+            style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); z-index: 1200; width: 44px; height: 44px; background: transparent; border: 0; padding: 8px; color: #222;">
+            <span class="menu-icon" aria-hidden="true" style="font-size:30px; line-height:1; display:inline-block;">≡</span>
+        </button>
+
+        <nav class="navbar" role="navigation" aria-label="Main Navigation">
+            <ul id="mainNavList">
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="about.html">ABOUT US</a></li>
+                <li><a href="gallery.html">GALLERY</a></li>
+                <li><a href="activities.html">ACTIVITIES</a></li>
+                <li><a href="reviews.html">CUSTOMER REVIEWS</a></li>
+                <li><a href="blogs.html">BLOGS / ARTICLE</a></li>
+                <li><a href="contact.html">CONTACT US</a></li>
+                <li><a href="faqs.html">FAQS</a></li>
+            </ul>
+        </nav>
+        <div class="nav-buttons">
+            <a href="booking.html" class="btn booking-btn">BOOK NOW</a>
+        </div>
+    </header>
+
+    
+    <!-- Floating Dark Mode Button -->
+<button id="themeButton" class="floating-theme-btn">
+    <span id="themeIcon">🌙</span>
+</button>
+    
+
+    <main>
+        <section class="thank-you" id="thankSection">
+            <div id="successIcon" style="font-size:48px; margin-bottom:10px;">✅</div>
+            <h1>Thank you for your booking!</h1>
+            <p class="lead" id="leadText">We have received your request. A confirmation has been sent to your email.</p>
+
+            <div class="booking-summary" id="bookingSummary" aria-live="polite" style="display:none;">
+                <!-- summary rows inserted by JS -->
+            </div>
+
+            <div class="actions">
+                <a href="index.html" class="btn-ghost">Back to Home</a>
+                <a id="printBtn" class="btn-primary" href="#" onclick="window.print(); return false;">Print / Save</a>
+            </div>
+
+            <div class="note" id="noteText">
+                If you need to change or cancel your reservation, please contact us at <a href="mailto:reservations@farmatsanbenito.com">reservations@farmatsanbenito.com</a> or call +1 (555) 123-4567.
+            </div>
+        </section>
+    </main>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+    <footer style="background: #034b09; color: #fff; padding: 30px 0; text-align: center; margin-top: 40px;">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <p style="margin: 0;">&copy; 2024 The Farm at San Benito. All rights reserved.</p>
+            <p style="margin: 8px 0 0 0; font-size: 0.95em;">
+                <a href="terms.html" style="color: #fff; text-decoration: underline; margin-right: 15px;">Privacy Policy</a>
+                <a href="terms.html" style="color: #fff; text-decoration: underline;">Terms of Service</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // parse query params or try to read booking data from localStorage
+        function getBookingData() {
+            const params = new URLSearchParams(window.location.search);
+            const keys = ['firstName','lastName','email','phone','checkin','checkout','guests','roomType','totalPrice','notes'];
+            let found = false;
+            const data = {};
+            keys.forEach(k => {
+                if (params.has(k)) {
+                    data[k] = params.get(k);
+                    found = true;
+                }
+            });
+
+            if (found) {
+                return data;
+            }
+
+            // fallback: check localStorage for bookingData (stringified JSON)
+            try {
+                const stored = localStorage.getItem('bookingData');
+                if (stored) {
+                    return JSON.parse(stored);
+                }
+            } catch (e) {
+                // ignore
+            }
+
+            return null;
+        }
+
+        function formatDate(d) {
+            if (!d) return '';
+            // try ISO or plain text
+            const dt = new Date(d);
+            if (!isNaN(dt)) {
+                return dt.toLocaleDateString();
+            }
+            return d;
+        }
+
+        function generateReference() {
+            // short random reference: YYYYMMDD + 4 chars
+            const now = new Date();
+            const y = now.getFullYear().toString().slice(-2);
+            const m = String(now.getMonth()+1).padStart(2,'0');
+            const day = String(now.getDate()).padStart(2,'0');
+            const rnd = Math.random().toString(36).slice(2,6).toUpperCase();
+            return `FB${y}${m}${day}-${rnd}`;
+        }
+
+        function showBooking() {
+            const booking = getBookingData();
+            const summary = document.getElementById('bookingSummary');
+            const lead = document.getElementById('leadText');
+
+            if (!booking) {
+                lead.textContent = 'Your booking was received. If you provided an email, you will receive a confirmation shortly.';
+                // ensure lead text is readable in dark mode and update when theme toggles
+                function updateLeadColor() {
+                    lead.style.color = document.body.classList.contains('dark-mode') ? '#cbd5e1' : '#444';
+                }
+                updateLeadColor();
+                const tb = document.getElementById('themeButton');
+                if (tb) tb.addEventListener('click', () => setTimeout(updateLeadColor, 50));
+                summary.style.display = 'none';
+                return;
+            }
+
+            // create display rows
+            const rows = [];
+
+            const fullName = [booking.firstName, booking.lastName].filter(Boolean).join(' ').trim();
+            if (fullName) rows.push(['Guest', fullName]);
+            if (booking.email) rows.push(['Email', booking.email]);
+            if (booking.phone) rows.push(['Phone', booking.phone]);
+            if (booking.roomType) rows.push(['Room type', booking.roomType]);
+            if (booking.checkin) rows.push(['Check-in', formatDate(booking.checkin)]);
+            if (booking.checkout) rows.push(['Check-out', formatDate(booking.checkout)]);
+            if (booking.guests) rows.push(['Guests', booking.guests]);
+            if (booking.totalPrice) rows.push(['Total price', booking.totalPrice]);
+            if (booking.notes) rows.push(['Notes', booking.notes]);
+
+            // booking reference
+            const reference = booking.ref || generateReference();
+            rows.unshift(['Booking reference', reference]);
+
+            // show confirmation text
+            lead.textContent = 'Your reservation has been received. Below are the details:';
+            summary.innerHTML = ''; // clear
+
+            rows.forEach((r, idx) => {
+                const row = document.createElement('div');
+                row.className = 'summary-row';
+                const left = document.createElement('div');
+                left.className = 'summary-title';
+                left.textContent = r[0];
+                const right = document.createElement('div');
+                right.className = 'summary-value';
+                // show ref with special style
+                if (r[0] === 'Booking reference') {
+                    right.innerHTML = `<span class="ref">${r[1]}</span>`;
+                } else {
+                    right.textContent = r[1];
+                }
+                row.appendChild(left);
+                row.appendChild(right);
+                summary.appendChild(row);
+            });
+
+            summary.style.display = 'block';
+        }
+
+        
+
+        // run
+        showBooking();
+    </script>
+    <script src="darkmode.js"></script>
+</body>
+</html>

@@ -1,0 +1,265 @@
+/* ========== GENERAL STYLES ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background: #f5f5f5;
+    color: #333;
+}
+
+/* ========== HEADER & NAVIGATION ========== */
+header {
+    width: 100%;
+    background: #ffffff;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #000;
+    font-family: "Poppins", sans-serif;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 700;
+    color: #008c4a;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+}
+
+.navbar ul li a {
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    color: #008c4a;
+    transition: 0.3s;
+}
+
+.navbar ul li a:hover {
+    color: #005e32;
+}
+
+/* ========== NAV BUTTONS ========== */
+.nav-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.btn {
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.booking-btn {
+    background: #008c4a;
+    color: #fff;
+}
+
+.booking-btn:hover {
+    background: #006b39;
+}
+
+.login-btn {
+    background: #ffffff;
+    color: #008c4a;
+    border: 2px solid #008c4a;
+}
+
+.login-btn:hover {
+    background: #008c4a;
+    color: #fff;
+}
+
+/* ========== HERO SECTION ========== */
+.hero {
+    height: 85vh;
+    background: url('images/resort-bg.jpg') center/cover no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    padding: 20px;
+}
+
+.hero h1 {
+    font-size: 60px;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.4);
+}
+
+.hero p {
+    margin-top: 10px;
+    font-size: 20px;
+    text-shadow: 0 3px 8px rgba(0,0,0,0.4);
+}
+
+.hero-btn {
+    margin-top: 25px;
+    padding: 12px 22px;
+    background: #008c4a;
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+
+.hero-btn:hover {
+    background: #006b39;
+}
+
+/* DARK MODE ----------------------------------*/
+.dark-mode {
+    background-color: #111;
+    color: #e4e4e4;
+}
+
+.dark-mode header {
+    background: #1a1a1a;
+    border-bottom: 1px solid #333;
+}
+
+.dark-mode .navbar a {
+    color: #e4e4e4;
+}
+
+.dark-mode .navbar a:hover {
+    color: #4cff9f;
+}
+
+.dark-mode .btn {
+    background: #007d41;
+    color: white;
+}
+
+.dark-mode .gallery-description {
+    background: #1c1c1c;
+    color: #dcdcdc;
+}
+
+.dark-mode h2, 
+.dark-mode h3 {
+    color: #4cff9f;
+}
+
+/* Images remain normal */
+.dark-mode img {
+    filter: brightness(0.9) contrast(1.1);
+}
+
+/* Forms */
+.dark-mode input,
+.dark-mode textarea {
+    background: #222;
+    color: #fff;
+    border: 1px solid #444;
+}
+
+/* Cards and sections */
+.dark-mode section {
+    background: #111;
+}
+
+.dark-mode .review-box,
+.dark-mode .tab-content {
+    background: #1b1b1b;
+    border-color: #333;
+}
+
+/* Toggle Switch ----------------------------------------------------*/
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 52px;
+    height: 28px;
+}
+
+.switch input {
+    display: none;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #ccc;
+    border-radius: 34px;
+    transition: 0.3s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+input:checked + .slider {
+    background-color: #00b35a;
+}
+
+input:checked + .slider:before {
+    transform: translateX(24px);
+}
+
+/* Icon Toggle Button ---------------------------------------------*/
+.theme-btn {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    margin-left: 15px;
+    transition: transform 0.3s ease;
+}
+
+.theme-btn:hover {
+    transform: rotate(15deg) scale(1.1);
+}
+
+.dark-mode .theme-btn #themeIcon {
+    color: #ffd369; /* soft golden sun */
+}
+/* Floating Dark Mode Button -------------------------------------*/
+.floating-theme-btn {
+    position: fixed;
+    top: 100px;          /* distance from top (adjust as you like) */
+    right: 30px;         /* distance from right edge */
+    background: #ffffff;
+    border: none;
+    padding: 12px 15px;
+    border-radius: 50%;
+    font-size: 28px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    z-index: 9999;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.floating-theme-btn:hover {
+    transform: scale(1.15);
+}
+
+.dark-mode .floating-theme-btn {
+    background: #222;
+    color: #ffd369;
+}
+
+

@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRIVACY POLICY & TERMS OF SERVICE - The Farm at San Benito</title>
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const logoImg = document.querySelector('.logo img');
+        if (!logoImg) return;
+        const parent = logoImg.parentElement;
+        if (parent && parent.tagName.toLowerCase() === 'a') {
+            parent.href = 'index.html';
+            parent.setAttribute('aria-label', 'Home');
+        } else {
+            const a = document.createElement('a');
+            a.href = 'index.html';
+            a.setAttribute('aria-label', 'Home');
+            a.style.display = 'inline-block';
+            parent.replaceChild(a, logoImg);
+            a.appendChild(logoImg);
+        }
+    });
+    </script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .blogs-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        .blogs-section h2 {
+            text-align: center;
+            color: #008c4a;
+            font-size: 40px;
+            margin-bottom: 50px;
+        }
+
+        .blog-card {
+            background: #fff;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+        }
+
+        .blog-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .blog-content {
+            padding: 30px;
+        }
+
+        .blog-content h3 {
+            color: #008c4a;
+            margin-bottom: 15px;
+            font-size: 26px;
+        }
+
+        .blog-content p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .blog-date {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 15px;
+        }
+
+        .customer-insights {
+            margin-top: 80px;
+        }
+
+        .customer-insights h2 {
+            text-align: center;
+            color: #008c4a;
+            font-size: 36px;
+            margin-bottom: 40px;
+        }
+
+        .insight-card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 20px 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .insight-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+        }
+
+        .insight-card h4 {
+            margin: 0 0 10px 0;
+            color: #008c4a;
+            font-size: 20px;
+        }
+
+        .insight-card p {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        @media(max-width: 800px) {
+            .blog-image {
+                height: 250px;
+            }
+        }
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+        body.dark-mode header {
+            background-color: #2d2d2d !important;
+            color: #e0e0e0;
+        }
+        body.dark-mode a {
+            color: #64b5f6;
+        }
+        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3 {
+            color: #e0e0e0;
+        }
+        body.dark-mode p {
+            color: #b0b0b0;
+        }
+        :root{
+            --header-height: 68px;
+            --accent-green: #034b09;
+            --light-bg: #fff;
+            --dark-bg: #1a1a1a;
+        }
+
+        /* Dark mode base tweaks */
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: #e0e0e0;
+        }
+        body.dark-mode header {
+            background-color: #2d2d2d !important;
+            color: #e0e0e0;
+        }
+        body.dark-mode a { color: #f0f0f0; }
+        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3 { color: #e0e0e0; }
+        body.dark-mode p { color: #ffffff; }
+
+        /* Header / nav layout */
+        header {
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        .logo { display:flex; align-items:center; }
+        .logo img { height:44px; width:auto; display:block; }
+
+        nav.navbar {
+            display:flex;
+            align-items:center;
+            flex:1;
+            justify-content: center;
+        }
+        nav.navbar ul {
+            list-style:none;
+            display:flex;
+            gap: 18px;
+            margin:0;
+            padding:0;
+            align-items:center;
+        }
+        nav.navbar a {
+            text-decoration:none;
+            color: inherit;
+            font-weight:700;
+            letter-spacing:0.02em;
+        }
+
+        .nav-buttons { margin-left:auto; }
+
+        /* Hamburger (mobile) */
+        .menu-toggle {
+            display: none;
+            background: transparent;
+            border: 0;
+            cursor: pointer;
+            padding: 8px;
+            margin-left: 8px;
+        }
+        .menu-toggle .bar {
+            display:block;
+            width:22px;
+            height:2px;
+            background:#222;
+            margin:4px 0;
+            transition: transform .2s ease, opacity .2s ease;
+        }
+        body.dark-mode .menu-toggle .menu-icon { color:#fff; }
+
+        /* Mobile responsive behavior */
+        @media (max-width: 900px) {
+            /* make header compact */
+            header { padding: 0 12px; gap: 8px; }
+            nav.navbar { justify-content: flex-end; }
+            nav.navbar ul { 
+                display: none; /* hide default list on small screens */
+                position: absolute;
+                top: calc(var(--header-height) + 8px);
+                right: 12px;
+                background: var(--light-bg);
+                border-radius: 8px;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+                flex-direction: column;
+                padding: 10px;
+                min-width: 220px;
+                z-index: 1100;
+            }
+            body.dark-mode nav.navbar ul { background: #222; box-shadow: 0 8px 24px rgba(0,0,0,0.35); }
+
+            nav.navbar ul.show {
+                display:flex;
+            }
+            nav.navbar ul li { padding: 8px 6px; }
+            nav.navbar ul a { display:block; width:100%; }
+
+            .menu-toggle { display:inline-flex; align-items:center; }
+
+            /* collapse nav-buttons into menu (so header stays compact) */
+            .nav-buttons { display:none; }
+        }
+
+        /* Make a few main sections adapt nicely */
+        .hero { padding-top: var(--header-height); min-height: 60vh; background-size:cover; }
+        .about-section { flex-direction: column; gap: 20px; padding: 20px; }
+        @media (min-width: 900px) {
+            .about-section { flex-direction: row; padding: 40px 60px; }
+        }
+
+        /* Ensure virtual-tour button moves on small screens */
+        .virtual-tour-btn { left: 50px; bottom: 80px; }
+        @media (max-width:480px){
+            .virtual-tour-btn{ left: 12px; bottom: 12px; width: 88px; height: 88px; font-size: 11px; }
+        }
+    </style>
+
+    <script>
+        // Menu toggle script: waits for DOM and then wires the hamburger to the nav.
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggle = document.getElementById('menuToggle');
+            const navList = document.getElementById('mainNavList');
+
+            if (!toggle || !navList) return;
+
+            // update aria-expanded and show/hide
+            function setOpen(open) {
+                if (open) {
+                    navList.classList.add('show');
+                    toggle.setAttribute('aria-expanded', 'true');
+                    // prevent body scroll when menu open on small screens
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    navList.classList.remove('show');
+                    toggle.setAttribute('aria-expanded', 'false');
+                    document.body.style.overflow = '';
+                }
+            }
+
+            toggle.addEventListener('click', function (e) {
+                const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+                setOpen(!isOpen);
+            });
+
+            // close menu when clicking outside or pressing Escape
+            document.addEventListener('click', function (e) {
+                if (!navList.classList.contains('show')) return;
+                if (toggle.contains(e.target) || navList.contains(e.target)) return;
+                setOpen(false);
+            });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') setOpen(false);
+            });
+
+            // close menu on link click (mobile)
+            navList.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+        });
+    </script>
+</head>
+<body>
+    <header style="position: fixed; top: 0; left: 0; right: 0; width: 100%; z-index: 1000; background-color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+
+        <div class="logo">
+            <img src="images/logo1.png" alt="Resort Logo" style="height:50px;">
+        </div>
+        <!-- mobile hamburger -->
+        <button id="menuToggle" class="menu-toggle" aria-controls="mainNavList" aria-expanded="false" aria-label="Toggle navigation"
+            style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); z-index: 1200; width: 44px; height: 44px; background: transparent; border: 0; padding: 8px; color: #222;">
+            <span class="menu-icon" aria-hidden="true" style="font-size:30px; line-height:1; display:inline-block;">≡</span>
+        </button>
+
+        <nav class="navbar" role="navigation" aria-label="Main Navigation">
+            <ul id="mainNavList">
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="about.html">ABOUT US</a></li>
+                <li><a href="gallery.html">GALLERY</a></li>
+                <li><a href="activities.html">ACTIVITIES</a></li>
+                <li><a href="reviews.html">CUSTOMER REVIEWS</a></li>
+                <li><a href="blogs.html">BLOGS / ARTICLE</a></li>
+                <li><a href="contact.html">CONTACT US</a></li>
+                <li><a href="faqs.html">FAQS</a></li>
+            </ul>
+        </nav>
+        <div class="nav-buttons">
+            <a href="booking.html" class="btn booking-btn">BOOK NOW</a>
+           
+            
+
+        </div>
+    </header>
+
+    <!-- Floating Dark Mode Button -->
+<button id="themeButton" class="floating-theme-btn">
+    <span id="themeIcon">🌙</span>
+</button>
+
+<br><br><br><br>
+    <section class="blogs-section">
+        <style>
+            /* Improve readability in dark mode for this section */
+            body.dark-mode .blogs-section .blog-card {
+                background: #1f1f1f;
+                box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+            }
+            body.dark-mode .blogs-section .blog-card .blog-content {
+                color: #e6e6e6;
+            }
+            body.dark-mode .blogs-section .blog-card h3 {
+                color: #9fe7a3;
+            }
+            body.dark-mode .blogs-section .blog-card p,
+            body.dark-mode .blogs-section .blog-card .blog-date {
+                color: #cfcfcf;
+            }
+            body.dark-mode .blogs-section a {
+                color: #8fd1ff;
+            }
+            /* Ensure date stands out slightly */
+            .blogs-section .blog-date {
+                color: #888;
+            }
+        </style>
+
+        <h2>PRIVACY POLICY & TERMS OF SERVICE</h2>
+        <div class="blog-card" style="padding:30px;">
+            <div class="blog-content" style="padding:0;">
+                <div class="blog-date">This policy is effective as of November 5, 2024
+                        <br> Last updated: November 5, 2024
+                </div>
+                <p style="text-align: justify; text-justify: inter-word;">Your privacy is important to us. It is The Farm at San Benito’s policy to respect your
+                    privacy and comply with any applicable laws and regulations regarding any personal 
+                    information we may collect, including across our website, <a href="https://jemeow234.github.io/The-Farm-at-San-Benito/" target="_blank" rel="noopener noreferrer">https://jemeow234.github.io/The-Farm-at-San-Benito/</a>.<br><br> </p>
+                <h3>1. WHAT PERSONAL INFORMATION WE COLLECT</h3>
+                <p style="text-align: justify; text-justify: inter-word;">We collect contact information or business affiliation, as well as personal details, government issued identification, bank account or credit card information, of clients.</p>
+                <br><br>
+                <h3>2.	HOW WE COLLECT</h3>
+                <p style="text-align: justify; text-justify: inter-word;">We collect, use and/or process personal information when you (i) avail of any of our products or services,
+                     (ii) communicate with us, (iii) sign up to receive communications from us, (iv) respond to our surveys, or
+                      (v) participate in our events. We may also collect information indirectly through third-party sources such
+                       as social media sites, publicly available databases and government repositories or from other clients.</p>
+                <br><br>
+                <h3>3.	WHY WE COLLECT</h3>
+                    <p style="text-align: justify; text-justify: inter-word;">The collected personal information will be utilized for the purpose of conducting
+                         appropriate due diligence, billing, communication, marketing and promotional advisories,
+                          documentation for product and service improvement, and to fulfill any contractual terms 
+                          and obligations we may have with you.</p>
+                    
+                <br><br>
+                <h3>4.	HOW WE KEEP YOUR PERSONALINFORMATION SECURE</h3>
+                <p style="text-align: justify; text-justify: inter-word;">Only authorized personnel are granted access to personal information collected by us. Personal
+                     information collected via the internet or other electronic methods are stored in a secured database.
+                      We use reasonable security safeguards to protect information from loss, unauthorized access, use or disclosure.</p>
+                <br><br>
+                <h3>5.	RIGHTS OF THE DATA SUBJECT</h3>
+                <p style="text-align: justify; text-justify: inter-word;">Under the Data Privacy Act of 2012, a data subject refers to an individual whose personal
+                     information is collected and processed. We are duty-bound to observe and respect your privacy rights,
+                      including your right to information, right to access, right to correct, right to remove, right to damages
+                       and right to data portability.</p>
+                <br><br>
+                <h3>6.	DISCLOSURE OF INFORMATION</h3>
+                <p style="text-align: justify; text-justify: inter-word;">
+                    We generally do not disclose the personal data we process to third parties without the consent of data subjects
+                    (i) unless we are legally required to do so; (ii) if it is necessary to fulfill the purposes for which we process
+                    personal data as mentioned above; or (iii) if such action is necessary to protect, defend or enforce our rights,
+                    property or the personal safety of our employees and other individuals. We may allow access to personal data to
+                    authorized third-party service providers/suppliers/ subcontractors/consultants who provide outsourced functions
+                    including, among others (i) cloud storage systems to meet the company’s storage management requirements; (ii)
+                    online portal/application-based services facilities; (iii) Systems integration software for the various business
+                    management systems, productivity tools and/or applications, and such other products and/or services; (iv)
+                    external professional advice and consultation including audits, legal assessments, and other studies and evaluations;
+                    and (v) other financial, technical, and administrative services such as information technology, sales administration,
+                    procurement, and other services. We remain responsible over the personal data disclosed to such third parties.
+                    As such, we ensure that such third parties are contractually obligated to comply with the requirements of the Data
+                    Privacy Act and shall process your data strictly in accordance with the purposes enumerated above.
+                </p>
+                <br><br>
+                
+        </div>
+    </section>
+
+    
+    <footer style="background: #034b09; color: #fff; padding: 30px 0; text-align: center; margin-top: 40px;">
+            <div style="max-width: 1200px; margin: 0 auto;">
+                <p style="margin: 0;">&copy; 2024 The Farm at San Benito. All rights reserved.</p>
+                <p style="margin: 8px 0 0 0; font-size: 0.95em;">
+                    <a href="terms.html" style="color: #fff; text-decoration: underline; margin-right: 15px;">Privacy Policy</a>
+                    <a href="terms.html" style="color: #fff; text-decoration: underline;">Terms of Service</a>
+                </p>
+            </div>
+        </footer>
+
+    <script src="darkmode.js"></script>
+
+</body>
+</html>

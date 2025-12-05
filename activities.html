@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activities - The Farm at San Benito</title>
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const logoImg = document.querySelector('.logo img');
+        if (!logoImg) return;
+        const parent = logoImg.parentElement;
+        if (parent && parent.tagName.toLowerCase() === 'a') {
+            parent.href = 'index.html';
+            parent.setAttribute('aria-label', 'Home');
+        } else {
+            const a = document.createElement('a');
+            a.href = 'index.html';
+            a.setAttribute('aria-label', 'Home');
+            a.style.display = 'inline-block';
+            parent.replaceChild(a, logoImg);
+            a.appendChild(logoImg);
+        }
+    });
+    </script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .activities-section {
+            padding: 60px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .activities-section h2 {
+            text-align: center;
+            color: #008c4a;
+            margin-bottom: 60px;
+            font-size: 40px;
+        }
+
+        .activity-item {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 60px;
+            align-items: center;
+        }
+
+        .activity-item img {
+            width: 600px;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 15px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .activity-item img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+        }
+
+        .activity-description {
+            flex: 1;
+        }
+
+        .activity-description h3 {
+            color: #008c4a;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .activity-description p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        @media(max-width: 1200px) {
+            .activity-item {
+                flex-direction: column;
+            }
+
+            .activity-item img {
+                width: 100%;
+                height: 300px;
+            }
+        }
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+        body.dark-mode header {
+            background-color: #2d2d2d !important;
+            color: #e0e0e0;
+        }
+        body.dark-mode a {
+            color: #64b5f6;
+        }
+        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3 {
+            color: #e0e0e0;
+        }
+        body.dark-mode p {
+            color: #b0b0b0;
+        }
+
+        :root{
+            --header-height: 68px;
+            --accent-green: #034b09;
+            --light-bg: #fff;
+            --dark-bg: #1a1a1a;
+        }
+
+        /* Dark mode base tweaks */
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: #e0e0e0;
+        }
+        body.dark-mode header {
+            background-color: #2d2d2d !important;
+            color: #e0e0e0;
+        }
+        body.dark-mode a { color: #f0f0f0; }
+        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3 { color: #e0e0e0; }
+        body.dark-mode p { color: #ffffff; }
+
+        /* Header / nav layout */
+        header {
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        .logo { display:flex; align-items:center; }
+        .logo img { height:44px; width:auto; display:block; }
+
+        nav.navbar {
+            display:flex;
+            align-items:center;
+            flex:1;
+            justify-content: center;
+        }
+        nav.navbar ul {
+            list-style:none;
+            display:flex;
+            gap: 18px;
+            margin:0;
+            padding:0;
+            align-items:center;
+        }
+        nav.navbar a {
+            text-decoration:none;
+            color: inherit;
+            font-weight:700;
+            letter-spacing:0.02em;
+        }
+
+        .nav-buttons { margin-left:auto; }
+
+        /* Hamburger (mobile) */
+        .menu-toggle {
+            display: none;
+            background: transparent;
+            border: 0;
+            cursor: pointer;
+            padding: 8px;
+            margin-left: 8px;
+        }
+        .menu-toggle .bar {
+            display:block;
+            width:22px;
+            height:2px;
+            background:#222;
+            margin:4px 0;
+            transition: transform .2s ease, opacity .2s ease;
+        }
+        body.dark-mode .menu-toggle .menu-icon { color:#fff; }
+
+        /* Mobile responsive behavior */
+        @media (max-width: 900px) {
+            /* make header compact */
+            header { padding: 0 12px; gap: 8px; }
+            nav.navbar { justify-content: flex-end; }
+            nav.navbar ul { 
+                display: none; /* hide default list on small screens */
+                position: absolute;
+                top: calc(var(--header-height) + 8px);
+                right: 12px;
+                background: var(--light-bg);
+                border-radius: 8px;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+                flex-direction: column;
+                padding: 10px;
+                min-width: 220px;
+                z-index: 1100;
+            }
+            body.dark-mode nav.navbar ul { background: #222; box-shadow: 0 8px 24px rgba(0,0,0,0.35); }
+
+            nav.navbar ul.show {
+                display:flex;
+            }
+            nav.navbar ul li { padding: 8px 6px; }
+            nav.navbar ul a { display:block; width:100%; }
+
+            .menu-toggle { display:inline-flex; align-items:center; }
+
+            /* collapse nav-buttons into menu (so header stays compact) */
+            .nav-buttons { display:none; }
+        }
+
+        /* Make a few main sections adapt nicely */
+        .hero { padding-top: var(--header-height); min-height: 60vh; background-size:cover; }
+        .about-section { flex-direction: column; gap: 20px; padding: 20px; }
+        @media (min-width: 900px) {
+            .about-section { flex-direction: row; padding: 40px 60px; }
+        }
+
+        /* Ensure virtual-tour button moves on small screens */
+        .virtual-tour-btn { left: 50px; bottom: 80px; }
+        @media (max-width:480px){
+            .virtual-tour-btn{ left: 12px; bottom: 12px; width: 88px; height: 88px; font-size: 11px; }
+        }
+        
+    </style>
+
+    <script>
+        // Menu toggle script: waits for DOM and then wires the hamburger to the nav.
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggle = document.getElementById('menuToggle');
+            const navList = document.getElementById('mainNavList');
+
+            if (!toggle || !navList) return;
+
+            // update aria-expanded and show/hide
+            function setOpen(open) {
+                if (open) {
+                    navList.classList.add('show');
+                    toggle.setAttribute('aria-expanded', 'true');
+                    // prevent body scroll when menu open on small screens
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    navList.classList.remove('show');
+                    toggle.setAttribute('aria-expanded', 'false');
+                    document.body.style.overflow = '';
+                }
+            }
+
+            toggle.addEventListener('click', function (e) {
+                const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+                setOpen(!isOpen);
+            });
+
+            // close menu when clicking outside or pressing Escape
+            document.addEventListener('click', function (e) {
+                if (!navList.classList.contains('show')) return;
+                if (toggle.contains(e.target) || navList.contains(e.target)) return;
+                setOpen(false);
+            });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') setOpen(false);
+            });
+
+            // close menu on link click (mobile)
+            navList.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+        });
+    </script>
+
+</head>
+
+<body>
+    <header style="position: fixed; top: 0; left: 0; right: 0; width: 100%; z-index: 1000; background-color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+        <div class="logo">
+            <img src="images/logo1.png" alt="Resort Logo" style="height:50px;">
+        </div>
+       <!-- mobile hamburger -->
+        <button id="menuToggle" class="menu-toggle" aria-controls="mainNavList" aria-expanded="false" aria-label="Toggle navigation"
+            style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); z-index: 1200; width: 44px; height: 44px; background: transparent; border: 0; padding: 8px; color: #222;">
+            <span class="menu-icon" aria-hidden="true" style="font-size:30px; line-height:1; display:inline-block;">≡</span>
+        </button>
+
+        <nav class="navbar" role="navigation" aria-label="Main Navigation">
+            <ul id="mainNavList">
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="about.html">ABOUT US</a></li>
+                <li><a href="gallery.html">GALLERY</a></li>
+                <li><a href="reviews.html">CUSTOMER REVIEWS</a></li>
+                <li><a href="blogs.html">BLOGS / ARTICLE</a></li>
+                <li><a href="contact.html">CONTACT US</a></li>
+                <li><a href="faqs.html">FAQS</a></li>
+            </ul>
+        </nav>
+        <div class="nav-buttons">
+            <a href="booking.html" class="btn booking-btn">BOOK NOW</a>
+            
+            
+</li>
+        </div>
+    </header>
+    <!-- Floating Dark Mode Button -->
+<button id="themeButton" class="floating-theme-btn">
+    <span id="themeIcon">🌙</span>
+</button>
+
+<br><br><br><br>
+    <section class="activities-section">
+        <h2>Our Activities</h2>
+
+        <!-- Carousel wrapper -->
+        <div id="activitiesCarousel" class="activities-carousel" aria-roledescription="carousel">
+            <button class="carousel-btn prev" aria-label="Previous slide">‹</button>
+
+            <div class="carousel-viewport">
+            <div class="carousel-track" role="list">
+                <article class="activity-card" role="listitem">
+                <img src="images/aaa.webp" alt="Tours" loading="lazy">
+                <div class="activity-description">
+                    <h3>Tours</h3>
+                    <p>Experience the beauty of the outdoors with our engaging tour activities.
+                         Whether you're joining a scenic coastal exploration or enjoying a lively
+                          game of beach volleyball, our tours are designed to bring people together
+                           in fun, active, and memorable ways. Perfect for families, friends, or solo
+                            travelers seeking adventure and connection.
+                            <br>
+                            <br>✔️ Enjoy guided tours through scenic coastal areas.
+                            <br>✔️ Play an exciting game of volleyball on our pristine beach.
+                            <br>✔️ Ideal for groups, families, and adventure-seekers.
+                            <br>✔️ Blends recreation with beautiful natural surroundings.
+                    </p>
+                </div>
+                </article>
+
+                <article class="activity-card" role="listitem">
+                <img src="images/flower-opt.jpg" alt="Daily Activities" loading="lazy">
+                <div class="activity-description">
+                    <h3>Daily Activities</h3>
+                    <p>Our daily activities offer exciting ways to stay active and explore nature.
+                         Paddle through calm waters on a guided kayaking experience as you take in
+                          the picturesque views around you. These activities are crafted to give guests
+                           a refreshing break while connecting with the beauty of the environment.
+                            <br>
+                            <br>✔️ Guided kayaking tours along serene coastal waters.
+                            <br>✔️ Perfect for both beginners and experienced paddlers.
+                            <br>✔️ Encourages outdoor exploration and movement.
+                            <br>✔️ Provides a refreshing nature-filled experience.
+                    </p>
+                </div>
+                </article>
+
+                <article class="activity-card" role="listitem">
+                <img src="images/ccc.jpg" alt="Workshops" loading="lazy">
+                <div class="activity-description">
+                    <h3>Workshops</h3>
+                    <p>Immerse yourself in hands-on workshops designed to nurture your well-being. With sessions
+                         focusing on creativity, relaxation, and personal growth, these workshops provide a peaceful
+                          space to learn new skills and unwind.
+                            <br>
+                            <br>✔️ Wellness-centered sessions that promote relaxation.
+                            <br>✔️ Creative and educational hands-on activities.
+                            <br>✔️ Led by experienced and supportive facilitators.
+                            <br>✔️ Helps rejuvenate mental and emotional well-being.
+                    </p>
+                </div>
+                </article>
+
+                <article class="activity-card" role="listitem">
+                <img src="images/ddd.jpg" alt="Holistic Healing" loading="lazy">
+                <div class="activity-description">
+                    <h3>Holistic Healing</h3>
+                    <p>Discover transformative restoration through our holistic healing programs. These therapies
+                         use mindful practices and natural techniques to bring harmony to your body, mind, and spirit,
+                          leaving you balanced and renewed.
+                            <br>
+                            <br>✔️ Treatments supporting full-body healing and balance.
+                            <br>✔️ Uses natural, holistic wellness approaches.
+                            <br>✔️ Enhances emotional, mental, and physical well-being.
+                            <br>✔️ Ideal for stress relief and inner restoration.
+                    </p>
+                </div>
+                </article>
+
+                <article class="activity-card" role="listitem">
+                        <img src="images/eee.webp" alt="Detox Program" loading="lazy">
+                        <div class="activity-description">
+                            <h3>Detox Program</h3>
+                            <p>Refresh your system from the inside out with our detox program.
+                                 Focused on cleansing, nourishing, and revitalizing, this program
+                                  helps eliminate toxins, restore energy, and support overall wellness.
+                            <br>
+                            <br>✔️ Cleansing treatments for internal detoxification.
+                            <br>✔️ Boosts energy, clarity, and vitality.
+                            <br>✔️ Includes guided wellness support and practices.
+                            <br>✔️ Promotes a lighter, healthier feeling.
+                    </p>
+                        </div>
+                    </article>
+
+                    <article class="activity-card" role="listitem">
+                        <img src="images/fff.jpg" alt="Medical Wellness" loading="lazy">
+                        <div class="activity-description">
+                            <h3>Medical Wellness</h3>
+                            <p>Experience medically guided wellness programs tailored to support long-term health.
+                                 Combining expert diagnostics with natural therapies, our medical wellness offerings
+                                  promote sustainable lifestyle improvements and overall well-being.
+                            <br>
+                            <br>✔️ Professionally supervised wellness programs.
+                            <br>✔️ Integrates science-based and natural healing methods.
+                            <br>✔️ Supports long-term health and balance.
+                            <br>✔️ Offers personalized guidance and recommendations.
+                    </p>
+                        </div>
+                    </article>
+
+                    <article class="activity-card" role="listitem">
+                        <img src="images/ggg.jpg" alt="Yoga & Meditation" loading="lazy">
+                        <div class="activity-description">
+                            <h3>Yoga & Meditation</h3>
+                            <p>Find grounding and inner peace through our yoga and meditation sessions. These practices help
+                                 calm the mind, strengthen the body, and nurture mindfulness—perfect for beginners and advanced
+                                  practitioners alike.
+                            <br>
+                            <br>✔️ Guided yoga for flexibility, strength, and alignment.
+                            <br>✔️ Meditation sessions for clarity and inner calm.
+                            <br>✔️ Accessible to all experience levels.
+                            <br>✔️ Encourages mindfulness, peace, and balance.
+                    </p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <button class="carousel-btn next" aria-label="Next slide">›</button>
+
+            <div class="carousel-dots" role="tablist" aria-label="Carousel Pagination"></div>
+        </div>
+
+        <style>
+            /* Carousel layout (scoped to avoid interfering with header/nav) */
+            .activities-carousel { position: relative; margin-top: 24px; }
+            .carousel-viewport { overflow: hidden; width: 100%; }
+            .carousel-track { display: flex; gap: 0; transition: transform 400ms ease; will-change: transform; padding: 8px 0; }
+
+            /* Show one card per view */
+            .activity-card {
+                background: #fff;
+                border-radius: 12px;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.09);
+                overflow: hidden;
+                display: flex;
+                flex-direction: column; /* put description below image */
+                gap: 0;
+                min-width: 100%;
+                flex: 0 0 100%;
+                align-items: stretch;
+                box-sizing: border-box;
+            }
+            .activity-card img {
+                width: 100%;
+                height: 380px;
+                object-fit: cover;
+                display: block;
+                flex-shrink: 0;
+            }
+            .activity-card .activity-description {
+                padding: 22px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            .activity-card h3 { margin: 0 0 10px 0; color: #008c4a; font-size: 24px; }
+            .activity-card p { margin: 0; color: #333; line-height: 1.6; font-size: 16px; }
+
+            .carousel-btn {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                background: rgba(255,255,255,0.97);
+                border: 0;
+                width: 54px;
+                height: 54px;
+                border-radius: 50%;
+                box-shadow: 0 8px 20px rgba(0,0,0,0.14);
+                cursor: pointer;
+                font-size: 26px;
+                line-height: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 50;
+            }
+            .carousel-btn.prev { left: 10px; }
+            .carousel-btn.next { right: 10px; }
+
+            .carousel-dots {
+                display: flex;
+                gap: 10px;
+                justify-content: center;
+                margin-top: 18px;
+            }
+            .carousel-dots button {
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                border: 0;
+                background: #d1d5db;
+                cursor: pointer;
+                padding: 0;
+            }
+            .carousel-dots button.active { background: #008c4a; }
+
+            /* Responsiveness: adjust image height for larger screens */
+            @media (min-width: 900px) {
+                .activity-card img { height: 420px; } /* taller image on wide layout */
+                .activity-card .activity-description { padding: 28px; }
+            }
+            @media (min-width: 1200px) {
+                .activity-card img { height: 480px; }
+            }
+
+            /* Respect dark mode variables already on page */
+            body.dark-mode .activity-card { background: #1f1f1f; box-shadow: 0 6px 18px rgba(0,0,0,0.4); }
+            body.dark-mode .activity-card h3 { color: #4ade80; }
+            body.dark-mode .activity-card p { color: #e5e7eb; }
+            body.dark-mode .carousel-btn { background: rgba(30,30,30,0.9); color: #fff; }
+        </style>
+
+        <script>
+            (function () {
+                const carousel = document.getElementById('activitiesCarousel');
+                if (!carousel) return;
+
+                const track = carousel.querySelector('.carousel-track');
+                const slides = Array.from(track.children);
+                const prevBtn = carousel.querySelector('.carousel-btn.prev');
+                const nextBtn = carousel.querySelector('.carousel-btn.next');
+                const dotsContainer = carousel.querySelector('.carousel-dots');
+                const viewport = carousel.querySelector('.carousel-viewport');
+
+                // create pagination dots (one per slide since we're showing one at a time)
+                function buildDots() {
+                    dotsContainer.innerHTML = '';
+                    const pages = slides.length;
+                    for (let i = 0; i < pages; i++) {
+                        const btn = document.createElement('button');
+                        btn.type = 'button';
+                        btn.dataset.index = i;
+                        btn.addEventListener('click', () => goToPage(i));
+                        dotsContainer.appendChild(btn);
+                    }
+                    updateDots();
+                }
+
+                let currentPage = 0;
+                function updateDots() {
+                    const children = Array.from(dotsContainer.children);
+                    children.forEach((b, i) => b.classList.toggle('active', i === currentPage));
+                }
+
+                function slideWidth() {
+                    // use actual slide width (should match viewport width)
+                    return slides[0].getBoundingClientRect().width;
+                }
+
+                function goToPage(page) {
+                    const maxPage = Math.max(0, slides.length - 1);
+                    currentPage = Math.min(Math.max(0, page), maxPage);
+                    const offset = currentPage * slideWidth();
+                    track.style.transform = `translateX(-${offset}px)`;
+                    updateDots();
+                }
+
+                prevBtn.addEventListener('click', () => goToPage(currentPage - 1));
+                nextBtn.addEventListener('click', () => goToPage(currentPage + 1));
+
+                // keyboard navigation
+                carousel.setAttribute('tabindex', '0'); // make focusable for keyboard events
+                carousel.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowLeft') prevBtn.click();
+                    if (e.key === 'ArrowRight') nextBtn.click();
+                });
+
+                // basic touch/swipe support
+                let startX = 0;
+                let deltaX = 0;
+                track.addEventListener('touchstart', (e) => {
+                    startX = e.touches[0].clientX;
+                    deltaX = 0;
+                    track.style.transition = 'none';
+                }, {passive: true});
+                track.addEventListener('touchmove', (e) => {
+                    deltaX = e.touches[0].clientX - startX;
+                    track.style.transform = `translateX(${ -currentPage * slideWidth() + deltaX }px)`;
+                }, {passive: true});
+                track.addEventListener('touchend', () => {
+                    track.style.transition = '';
+                    if (Math.abs(deltaX) > 50) {
+                        if (deltaX > 0) prevBtn.click(); else nextBtn.click();
+                    } else {
+                        goToPage(currentPage); // snap back
+                    }
+                    deltaX = 0;
+                });
+
+                // rebuild dots on resize and keep current page valid
+                let rTimer;
+                window.addEventListener('resize', () => {
+                    clearTimeout(rTimer);
+                    rTimer = setTimeout(() => {
+                        // ensure transforms use new widths
+                        buildDots();
+                        goToPage(currentPage); // re-snap
+                    }, 120);
+                });
+
+                // init
+                buildDots();
+                goToPage(0);
+            })();
+        </script>
+    </section>
+
+    <style>
+        body.dark-mode .activities-section h2 {
+            color: #4ade80;
+        }
+
+        body.dark-mode .activity-description h3 {
+            color: #4ade80;
+        }
+
+        body.dark-mode .activity-description p {
+            color: #e5e7eb;
+        }
+    </style>
+
+    <footer style="background: #034b09; color: #fff; padding: 30px 0; text-align: center; margin-top: 40px;">
+            <div style="max-width: 1200px; margin: 0 auto;">
+                <p style="margin: 0;">&copy; 2024 The Farm at San Benito. All rights reserved.</p>
+                <p style="margin: 8px 0 0 0; font-size: 0.95em;">
+                    <a href="terms.html" style="color: #fff; text-decoration: underline; margin-right: 15px;">Privacy Policy</a>
+                    <a href="terms.html" style="color: #fff; text-decoration: underline;">Terms of Service</a>
+                </p>
+            </div>
+        </footer>
+
+    <script src="darkmode.js"></script>
+
+</body>
+</html>

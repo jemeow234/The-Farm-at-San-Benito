@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home - The Farm at San Benito</title>
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const logoImg = document.querySelector('.logo img');
+        if (!logoImg) return;
+        const parent = logoImg.parentElement;
+        if (parent && parent.tagName.toLowerCase() === 'a') {
+            parent.href = 'index.html';
+            parent.setAttribute('aria-label', 'Home');
+        } else {
+            const a = document.createElement('a');
+            a.href = 'index.html';
+            a.setAttribute('aria-label', 'Home');
+            a.style.display = 'inline-block';
+            parent.replaceChild(a, logoImg);
+            a.appendChild(logoImg);
+        }
+    });
+    </script>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        :root{
+            --header-height: 68px;
+            --accent-green: #034b09;
+            --light-bg: #fff;
+            --dark-bg: #1a1a1a;
+        }
+
+        /* Dark mode base tweaks */
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: #e0e0e0;
+        }
+        body.dark-mode header {
+            background-color: #2d2d2d !important;
+            color: #e0e0e0;
+        }
+        body.dark-mode a { color: #f0f0f0; }
+        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3 { color: #e0e0e0; }
+        body.dark-mode p { color: #ffffff; }
+
+        /* Header / nav layout */
+        header {
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        .logo { display:flex; align-items:center; }
+        .logo img { height:44px; width:auto; display:block; }
+
+        nav.navbar {
+            display:flex;
+            align-items:center;
+            flex:1;
+            justify-content: center;
+        }
+        nav.navbar ul {
+            list-style:none;
+            display:flex;
+            gap: 18px;
+            margin:0;
+            padding:0;
+            align-items:center;
+        }
+        nav.navbar a {
+            text-decoration:none;
+            color: inherit;
+            font-weight:700;
+            letter-spacing:0.02em;
+        }
+
+        .nav-buttons { margin-left:auto; }
+
+        /* Hamburger (mobile) */
+        .menu-toggle {
+            display: none;
+            background: transparent;
+            border: 0;
+            cursor: pointer;
+            padding: 8px;
+            margin-left: 8px;
+        }
+        .menu-toggle .bar {
+            display:block;
+            width:22px;
+            height:2px;
+            background:#222;
+            margin:4px 0;
+            transition: transform .2s ease, opacity .2s ease;
+        }
+        body.dark-mode .menu-toggle .menu-icon { color:#fff; }
+
+        /* Mobile responsive behavior */
+        @media (max-width: 900px) {
+            /* make header compact */
+            header { padding: 0 12px; gap: 8px; }
+            nav.navbar { justify-content: flex-end; }
+            nav.navbar ul { 
+                display: none; /* hide default list on small screens */
+                position: absolute;
+                top: calc(var(--header-height) + 8px);
+                right: 12px;
+                background: var(--light-bg);
+                border-radius: 8px;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+                flex-direction: column;
+                padding: 10px;
+                min-width: 220px;
+                z-index: 1100;
+            }
+            body.dark-mode nav.navbar ul { background: #222; box-shadow: 0 8px 24px rgba(0,0,0,0.35); }
+
+            nav.navbar ul.show {
+                display:flex;
+            }
+            nav.navbar ul li { padding: 8px 6px; }
+            nav.navbar ul a { display:block; width:100%; }
+
+            .menu-toggle { display:inline-flex; align-items:center; }
+
+            /* collapse nav-buttons into menu (so header stays compact) */
+            .nav-buttons { display:none; }
+        }
+
+        /* Make a few main sections adapt nicely */
+        .hero { padding-top: var(--header-height); min-height: 60vh; background-size:cover; }
+        .about-section { flex-direction: column; gap: 20px; padding: 20px; }
+        @media (min-width: 900px) {
+            .about-section { flex-direction: row; padding: 40px 60px; }
+        }
+
+        /* Ensure virtual-tour button moves on small screens */
+        .virtual-tour-btn { left: 50px; bottom: 80px; }
+        @media (max-width:480px){
+            .virtual-tour-btn{ left: 12px; bottom: 12px; width: 88px; height: 88px; font-size: 11px; }
+        }
+    </style>
+
+    <script>
+        // Menu toggle script: waits for DOM and then wires the hamburger to the nav.
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggle = document.getElementById('menuToggle');
+            const navList = document.getElementById('mainNavList');
+
+            if (!toggle || !navList) return;
+
+            // update aria-expanded and show/hide
+            function setOpen(open) {
+                if (open) {
+                    navList.classList.add('show');
+                    toggle.setAttribute('aria-expanded', 'true');
+                    // prevent body scroll when menu open on small screens
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    navList.classList.remove('show');
+                    toggle.setAttribute('aria-expanded', 'false');
+                    document.body.style.overflow = '';
+                }
+            }
+
+            toggle.addEventListener('click', function (e) {
+                const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+                setOpen(!isOpen);
+            });
+
+            // close menu when clicking outside or pressing Escape
+            document.addEventListener('click', function (e) {
+                if (!navList.classList.contains('show')) return;
+                if (toggle.contains(e.target) || navList.contains(e.target)) return;
+                setOpen(false);
+            });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') setOpen(false);
+            });
+
+            // close menu on link click (mobile)
+            navList.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+        });
+    </script>
+</head>
+<body>
+    <header style="position: fixed; top: 0; left: 0; right: 0; width: 100%; z-index: 1000; background-color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+        <div class="logo">
+            <img src="images/logo1.png" alt="Resort Logo" style="height:50px;">
+        </div>
+
+        <!-- mobile hamburger -->
+        <button id="menuToggle" class="menu-toggle" aria-controls="mainNavList" aria-expanded="false" aria-label="Toggle navigation"
+            style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); z-index: 1200; width: 44px; height: 44px; background: transparent; border: 0; padding: 8px; color: #222;">
+            <span class="menu-icon" aria-hidden="true" style="font-size:30px; line-height:1; display:inline-block;">≡</span>
+        </button>
+
+        <nav class="navbar" role="navigation" aria-label="Main Navigation">
+            <ul id="mainNavList">
+                <li><a href="about.html">ABOUT US</a></li>
+                <li><a href="gallery.html">GALLERY</a></li>
+                <li><a href="activities.html">ACTIVITIES</a></li>
+                <li><a href="reviews.html">CUSTOMER REVIEWS</a></li>
+                <li><a href="blogs.html">BLOGS / ARTICLE</a></li>
+                <li><a href="contact.html">CONTACT US</a></li>
+                <li><a href="faqs.html">FAQS</a></li>
+            </ul>
+        </nav>
+        <div class="nav-buttons">
+            <a href="booking.html" class="btn booking-btn">BOOK NOW</a>
+        </div>
+    </header>
+<!-- Floating Dark Mode Button -->
+<button id="themeButton" class="floating-theme-btn">
+    <span id="themeIcon">🌙</span>
+</button>
+<br><br><br>
+
+    <section class="hero" style="background-image: url('images/deluxe.jpg'); background-size: cover; background-position: center; position: relative;">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <style>
+            @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Poppins:wght@400;600&display=swap');
+
+            .hero-title {
+                font-family: "Playfair Display", serif;
+                font-weight: 900;
+                font-size: clamp(1.6rem, 4vw, 3.2rem);
+                color: #ffffff;
+                margin: 0;
+                letter-spacing: 0.01em;
+                line-height: 1.05;
+                text-shadow:
+                    0 8px 30px rgba(0,0,0,0.65),
+                    0 2px 8px rgba(0,0,0,0.45),
+                    0 1px 0 rgba(255,255,255,0.02) inset;
+                -webkit-font-smoothing: antialiased;
+            }
+
+            .hero-sub {
+                font-family: "Poppins", "Helvetica Neue", Arial, sans-serif;
+                font-weight: 600;
+                font-size: clamp(0.95rem, 2.2vw, 1.25rem);
+                color: rgba(255,255,255,0.95);
+                margin-top: 0.85em;
+                margin-bottom: 0;
+                letter-spacing: 0.02em;
+                text-shadow: 0 6px 18px rgba(0,0,0,0.5);
+            }
+            </style>
+
+            <h1 class="hero-title">Welcome to The Farm at San Benito</h1>
+            <p class="hero-sub">A Place for Nurturing Growth</p>
+            <div style="margin-top: 40px;">
+                <a href="booking.html" class="hero-btn">Book Now</a>
+            </div>
+        </div>
+
+        <!-- Bottom-left transparent circular "VIRTUAL TOUR" button -->
+        <a href="https://artemlevy-vipixelproduction.com/virtual-tour-the-farm-at-san-benito/" class="virtual-tour-btn" aria-label="Virtual Tour" title="Virtual Tour" style="font-family: 'Times New Roman', Times, Georgia, serif; font-style: normal;" target="_blank" rel="noopener noreferrer">
+            VIRTUAL<br>TOUR
+        </a>
+
+        <style>
+            .virtual-tour-btn{
+                position: absolute;
+                left: 50px;
+                bottom: 80px;
+                width: 200px;
+                height: 200px;
+                border-radius: 50%;
+                background: rgba(255,255,255,0.06);
+                border: 2px solid rgba(255,255,255,0.85);
+                color: #ffffff;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                text-decoration: none;
+                font-weight: 700;
+                font-size: 25px;
+                line-height: 1;
+                padding: 8px;
+                box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+                backdrop-filter: blur(4px);
+                transition: transform .15s ease, background .15s ease;
+                cursor: pointer;
+            }
+            .virtual-tour-btn:hover{
+                transform: translateY(-4px);
+                background: rgba(255,255,255,0.12);
+            }
+            /* ensure readability in dark mode if body.dark-mode is used */
+            body.dark-mode .virtual-tour-btn{
+                border-color: rgba(255,255,255,0.9);
+                background: rgba(0,0,0,0.25);
+                color: #fff;
+            }
+            @media (max-width:480px){
+                .virtual-tour-btn{
+                    width: 88px;
+                    height: 88px;
+                    left: 12px;
+                    bottom: 12px;
+                    font-size: 11px;
+                }
+            }
+        </style>
+    </section>
+
+
+    <section class="about-section" style="display: flex; align-items: center; justify-content: space-between; padding: 40px 0; width: 100%;">
+        <div class="about-text" style="flex: 1; padding-right: 30px; padding-left: 30px;">
+            <h1 style="font-size:1.2rem; font-style: italic; font-weight: 600; margin: 0 0 0.5em;">"OUR COMMITMENT TO YOU"</h1>
+            <h2 style="font-size: 3rem; font-weight: 700; margin: 0.2em 0;">The Farm at San Benito Promise</h2>
+            <p style="text-align: justify; text-align-last: left; line-height: 1.8; font-style: italic; font-weight: 700;font-size:medium;">
+                <br>
+                The Farm at San Benito is a holistic wellness sanctuary in Batangas dedicated to healing and transformative experiences.
+                 Nestled in lush natural surroundings, it offers a peaceful escape for guests seeking rest and rejuvenation.
+                  The resort combines medical wellness, natural therapies, and plant-based nutrition to support long-term health.
+                   With expert doctors, therapists, and wellness practitioners, every program is designed to nurture the mind,
+                    body, and spirit. As one of Asia's leading wellness destinations, The Farm continues to inspire guests to live
+                    healthier and more balanced lives.
+            </p>
+        </div>
+        <div class="about-image" style="flex: 1; display: flex; justify-content: center;">
+            <div class="about-carousel" style="position: relative; padding-right: 30px; width: 100%; max-width: 1000px; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
+            <style>
+                /* ensure same size and add sliding animation */
+                .about-carousel .carousel-viewport { width:100%; overflow:hidden; }
+                .about-carousel .carousel-track {
+                display:flex;
+                width:100%;
+                transition: transform 0.5s ease;
+                will-change: transform;
+                }
+                .about-carousel .carousel-slide {
+                flex: 0 0 100%;
+                width: 100%;
+                height: 320px; /* fixed height for uniformity - adjust as needed */
+                object-fit: cover;
+                display: block;
+                }
+                .about-carousel .carousel-btn {
+                position:absolute;
+                top:50%;
+                transform:translateY(-50%);
+                background:rgba(0,0,0,0.5);
+                color:#fff;
+                border:none;
+                padding:8px 12px;
+                border-radius:6px;
+                cursor:pointer;
+                font-size:20px;
+                }
+                .about-carousel .carousel-btn.prev { left:8px; }
+                .about-carousel .carousel-btn.next { right:8px; }
+            </style>
+
+            <div class="carousel-viewport">
+                <div class="carousel-track" aria-live="polite">
+                <img src="images/suites.jpg" alt="Suite 1" class="carousel-slide">
+                <img src="images/suite1.jpg" alt="Suite 2" class="carousel-slide">
+                <img src="images/Untitled-design-2.webp" alt="Suite 3" class="carousel-slide">
+                </div>
+            </div>
+
+            <button class="carousel-btn prev" aria-label="Previous">‹</button>
+            <button class="carousel-btn next" aria-label="Next">›</button>
+            </div>
+        </div>
+
+        <script>
+            // Replace any previously-attached listeners (from the other inline script) after page load,
+            // normalize inline display styles, and enable sliding via transform.
+            window.addEventListener('load', function () {
+            const carousel = document.querySelector('.about-carousel');
+            if (!carousel) return;
+
+            const track = carousel.querySelector('.carousel-track');
+            let slides = Array.from(carousel.querySelectorAll('.carousel-slide'));
+            const total = slides.length;
+            let index = 0;
+
+            // clear any inline display styles the other script may have set
+            slides.forEach(s => {
+                s.style.display = '';
+                s.style.flex = '0 0 100%';
+            });
+
+            // remove old listeners by replacing buttons (cloning discards listeners)
+            const oldPrev = carousel.querySelector('.carousel-btn.prev');
+            const oldNext = carousel.querySelector('.carousel-btn.next');
+            const prev = oldPrev.cloneNode(true);
+            const next = oldNext.cloneNode(true);
+            oldPrev.parentNode.replaceChild(prev, oldPrev);
+            oldNext.parentNode.replaceChild(next, oldNext);
+
+            function goTo(i) {
+                index = (i + total) % total;
+                track.style.transform = 'translateX(' + (-index * 100) + '%)';
+            }
+
+            prev.addEventListener('click', function () { goTo(index - 1); });
+            next.addEventListener('click', function () { goTo(index + 1); });
+
+            // keyboard support
+            carousel.setAttribute('tabindex', '0');
+            carousel.addEventListener('keydown', function (e) {
+                if (e.key === 'ArrowLeft') prev.click();
+                if (e.key === 'ArrowRight') next.click();
+            });
+
+            // initial position
+            track.style.transition = 'transform 0.5s ease';
+            goTo(0);
+            });
+        </script>
+        </section>
+
+        <script>
+        (function() {
+        const carousel = document.querySelector('.about-carousel');
+        if (!carousel) return;
+        const slides = carousel.querySelectorAll('.carousel-slide');
+        const prevBtn = carousel.querySelector('.carousel-btn.prev');
+        const nextBtn = carousel.querySelector('.carousel-btn.next');
+        let index = 0;
+
+        function show(i) {
+            slides.forEach((s, k) => s.style.display = (k === i) ? 'block' : 'none');
+        }
+
+        prevBtn.addEventListener('click', () => {
+            index = (index - 1 + slides.length) % slides.length;
+            show(index);
+        });
+
+        nextBtn.addEventListener('click', () => {
+            index = (index + 1) % slides.length;
+            show(index);
+        });
+
+        // optional: keyboard support
+        carousel.addEventListener('keydown', e => {
+            if (e.key === 'ArrowLeft') prevBtn.click();
+            if (e.key === 'ArrowRight') nextBtn.click();
+        });
+
+        // set initial slide
+        show(index);
+        })();
+        </script>
+
+        
+
+        <section id="events" style="padding:40px 4vw; width:100%; box-sizing:border-box;">
+            <h2 style="font-size:2rem; margin:0 0 20px; text-align:center;">Events</h2>
+
+            <style>
+            /* Use a responsive multi-column grid so cards sit side-by-side on wider screens */
+            #events { width:100%; }
+            #events .events-grid {
+              display: grid;
+              grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+              gap: 20px;
+              align-items: start;
+            }
+
+            /* Card fills container and keeps consistent height distribution */
+            #events .event-card {
+              box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+              border-radius: 8px;
+              overflow: hidden;
+              background: #fff;
+              display: flex;
+              flex-direction: column;
+              height: 100%;
+              color: #222;
+            }
+
+            /* Make images large and responsive so cards use side space well */
+            #events .image-holder {
+              width: 100%;
+              height: 260px;
+              background-size: cover;
+              background-position: center;
+              display: block;
+              flex-shrink: 0;
+              position: relative; /* for overlay */
+            }
+
+            /* overlay used in dark mode to keep text readable over images */
+            #events .image-holder::after {
+              content: "";
+              position: absolute;
+              inset: 0;
+              pointer-events: none;
+              background: transparent;
+            }
+
+            #events .event-body {
+              padding: 16px;
+              display: flex;
+              flex-direction: column;
+              flex: 1 1 auto;
+            }
+
+            #events .event-title { font-size: 1.1rem; margin: 0 0 8px; font-weight: 700; color: #111; }
+            #events .event-desc { margin: 0 0 12px; color: #444; line-height: 1.4; font-size: 0.95rem; }
+            #events .event-meta { font-size: 0.9rem; color: #666; margin-bottom: 12px; }
+
+            /* Keep CTA pinned to the bottom of card body so layout stays consistent */
+            #events .event-cta {
+              display: inline-block;
+              padding: 8px 12px;
+              background: #034b09;
+              color: #fff;
+              border-radius: 6px;
+              text-decoration: none;
+              font-size: 0.95rem;
+              margin-top: auto;
+              align-self: flex-start;
+            }
+
+            /* Small screens: slightly smaller images and single column */
+            @media (max-width: 700px) {
+              #events .image-holder { height: 200px; }
+              #events h2 { font-size: 1.6rem; }
+              /* grid will naturally collapse to single column because of minmax */
+            }
+
+            /* Dark mode overrides for event cards */
+            body.dark-mode #events .event-card {
+              background: #0f0f10;
+              color: #e6e6e6;
+              box-shadow: 0 4px 12px rgba(255,255,255,0.03);
+            }
+
+            /* Darken images slightly and ensure overlay contrast */
+            body.dark-mode #events .image-holder::after {
+              background: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35));
+            }
+
+            /* Text colors inside the card in dark mode */
+            body.dark-mode #events .event-title { color: #f5f5f5; }
+            body.dark-mode #events .event-desc { color: #d7d7d7; }
+            body.dark-mode #events .event-meta { color: #bfc7bd; }
+
+            /* CTA styles for dark mode: slightly lighter green for visibility */
+            body.dark-mode #events .event-cta {
+              background: linear-gradient(180deg, #156c2f, #0b4d1f);
+              color: #fff;
+              box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+            }
+
+            /* Ensure links inside description remain readable in dark mode */
+            body.dark-mode #events .event-body a { color: #bfeab0; }
+
+            </style>
+
+            <div class="events-grid" aria-live="polite">
+
+            <!-- Card 1 -->
+            <article class="event-card" role="article">
+            <div class="image-holder" style="background-image:url('images/dining-alive.jpg');" role="img" aria-label="Wellness Retreat"></div>
+            <div class="event-body">
+            <div class="event-meta">June 12-14 · The Farm at San Benito</div>
+            <h3 class="event-title">🌱 “Harmony in Nature” - A Wellness Day Immersion</h3>
+            <p class="event-desc">
+            A full-day retreat designed to reconnect guests with their breath, body, and the landscape around them.
+             The experience begins with a guided forest walk, where guests move at an unhurried pace, tuning in to
+              the sounds and textures of the garden pathways.
+              <br><br>
+              Mid-morning, participants gather for a mind-body grounding session-a blend of gentle stretching,
+               breathwork, and stillness beneath the trees. A plant-based lunch follows, crafted with ingredients
+            harvested from the Farm's organic gardens, celebrating nourishment in its purest form.
+            <br><br>
+            In the afternoon, guests explore hands-on wellness activities, such as herbal crafting,
+             tea blending, or mindful journaling. The day settles into a tranquil close with a sound bath
+              session, letting tones and vibrations sweep away the lingering static of daily life.
+            </p>
+            
+            <a class="event-cta" href="gallery.html">Learn More</a>
+            </div>
+            </article>
+
+            <!-- Card 2 -->
+            <article class="event-card" role="article">
+            <div class="image-holder" style="background-image:url('images/dining11.jpg');" role="img" aria-label="Farm-to-Table Dinner"></div>
+            <div class="event-body">
+            <div class="event-meta">June 12-14 · The Farm at San Benito</div>
+            <h3 class="event-title">🎄 “A Green Christmas at The Farm” - Wellness Holiday Celebration</h3>
+            <p class="event-desc">A gentle holiday gathering where guests experience Christmas through nature and calm rather
+             than noise and rush. The event opens with a sunset lighting of eco-friendly lanterns, symbolizing warmth and
+              renewal. A seasonal plant-based Christmas dinner follows, featuring fresh ingredients from the property's own gardens.
+              <br><br>
+              Guests can join a Holiday Gratitude Circle, where they write intentions or messages of thanks on seed-infused cards
+               that can be planted afterward-turning wishes into growing life. Soft acoustic music fills the garden, and the evening
+            closes with a Herbal Cacao Nightcap Ritual, inviting everyone to slow down and welcome the season with clarity and ease.
+
+            </p>
+            <div class="event-meta">Monthly Supper Club · Reserve Early</div>
+            <a class="event-cta" href="activities.html">Learn More</a>
+            </div>
+            </article>
+
+            </div>
+        </section>
+
+
+
+        <footer style="background: #034b09; color: #fff; padding: 30px 0; text-align: center; margin-top: 40px;">
+            <div style="max-width: 1200px; margin: 0 auto;">
+                <p style="margin: 0;">&copy; 2024 The Farm at San Benito. All rights reserved.</p>
+                <p style="margin: 8px 0 0 0; font-size: 0.95em;">
+                    <a href="terms.html" style="color: #fff; text-decoration: underline; margin-right: 15px;">Privacy Policy</a>
+                    <a href="terms.html" style="color: #fff; text-decoration: underline;">Terms of Service</a>
+                </p>
+            </div>
+        </footer>
+
+        <script>
+        const heroSection = document.querySelector('.hero');
+        const images = ['images/deluxe.jpg', 'images/suite1.jpg', 'images/Untitled-design-2.webp'];
+        let currentSlide = 0;
+        
+        function changeBackground() {
+            heroSection.style.transition = 'background-image 1s ease-in-out';
+            heroSection.style.backgroundImage = `url('${images[currentSlide]}')`;
+            currentSlide = (currentSlide + 1) % images.length;
+        }
+        
+        setInterval(changeBackground, 5000);
+    </script>
+
+    <script src="darkmode.js"></script>
+
+</body>
+</html>

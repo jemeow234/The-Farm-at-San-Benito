@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQs - The Farm at San Benito</title>
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const logoImg = document.querySelector('.logo img');
+        if (!logoImg) return;
+        const parent = logoImg.parentElement;
+        if (parent && parent.tagName.toLowerCase() === 'a') {
+            parent.href = 'index.html';
+            parent.setAttribute('aria-label', 'Home');
+        } else {
+            const a = document.createElement('a');
+            a.href = 'index.html';
+            a.setAttribute('aria-label', 'Home');
+            a.style.display = 'inline-block';
+            parent.replaceChild(a, logoImg);
+            a.appendChild(logoImg);
+        }
+    });
+    </script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f9;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        header .logo img {
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: #008c4a;
+            
+        }
+
+
+        .faq-section {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 40px;
+        }
+
+        .faq-section h2 {
+            text-align: center;
+            font-size: 40px;
+            color: #008c4a;
+            margin-bottom: 100px;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .tab-button {
+            padding: 15px 30px;
+            border-radius: 8px;
+            border: 2px solid #008c4a;
+            background: #fff;
+            color: #008c4a;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-button.active {
+            background: #008c4a;
+            color: #fff;
+        }
+
+        .tab-content {
+            background: #fff;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            min-height: 500px;
+            transition: all 0.3s;
+        }
+
+        .tab-content p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        @media(max-width: 800px) {
+            .tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .tab-button {
+                width: 80%;
+                text-align: center;
+            }
+        }
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+        body.dark-mode header {
+            background-color: #2d2d2d !important;
+            color: #e0e0e0;
+        }
+        body.dark-mode a {
+            color: #64b5f6;
+        }
+        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3 {
+            color: #e0e0e0;
+        }
+        body.dark-mode p {
+            color: #b0b0b0;
+        }
+        :root{
+            --header-height: 68px;
+            --accent-green: #034b09;
+            --light-bg: #fff;
+            --dark-bg: #1a1a1a;
+        }
+
+        /* Dark mode base tweaks */
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: #e0e0e0;
+        }
+        body.dark-mode header {
+            background-color: #2d2d2d !important;
+            color: #e0e0e0;
+        }
+        body.dark-mode a { color: #f0f0f0; }
+        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3 { color: #e0e0e0; }
+        body.dark-mode p { color: #ffffff; }
+
+        /* Header / nav layout */
+        header {
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        .logo { display:flex; align-items:center; }
+        .logo img { height:44px; width:auto; display:block; }
+
+        nav.navbar {
+            display:flex;
+            align-items:center;
+            flex:1;
+            justify-content: center;
+        }
+        nav.navbar ul {
+            list-style:none;
+            display:flex;
+            gap: 18px;
+            margin:0;
+            padding:0;
+            align-items:center;
+        }
+        nav.navbar a {
+            text-decoration:none;
+            color: inherit;
+            font-weight:700;
+            letter-spacing:0.02em;
+        }
+
+        .nav-buttons { margin-left:auto; }
+
+        /* Hamburger (mobile) */
+        .menu-toggle {
+            display: none;
+            background: transparent;
+            border: 0;
+            cursor: pointer;
+            padding: 8px;
+            margin-left: 8px;
+        }
+        .menu-toggle .bar {
+            display:block;
+            width:22px;
+            height:2px;
+            background:#222;
+            margin:4px 0;
+            transition: transform .2s ease, opacity .2s ease;
+        }
+        body.dark-mode .menu-toggle .menu-icon { color:#fff; }
+
+        /* Mobile responsive behavior */
+        @media (max-width: 900px) {
+            /* make header compact */
+            header { padding: 0 12px; gap: 8px; }
+            nav.navbar { justify-content: flex-end; }
+            nav.navbar ul { 
+                display: none; /* hide default list on small screens */
+                position: absolute;
+                top: calc(var(--header-height) + 8px);
+                right: 12px;
+                background: var(--light-bg);
+                border-radius: 8px;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+                flex-direction: column;
+                padding: 10px;
+                min-width: 220px;
+                z-index: 1100;
+            }
+            body.dark-mode nav.navbar ul { background: #222; box-shadow: 0 8px 24px rgba(0,0,0,0.35); }
+
+            nav.navbar ul.show {
+                display:flex;
+            }
+            nav.navbar ul li { padding: 8px 6px; }
+            nav.navbar ul a { display:block; width:100%; }
+
+            .menu-toggle { display:inline-flex; align-items:center; }
+
+            /* collapse nav-buttons into menu (so header stays compact) */
+            .nav-buttons { display:none; }
+        }
+
+        /* Make a few main sections adapt nicely */
+        .hero { padding-top: var(--header-height); min-height: 60vh; background-size:cover; }
+        .about-section { flex-direction: column; gap: 20px; padding: 20px; }
+        @media (min-width: 900px) {
+            .about-section { flex-direction: row; padding: 40px 60px; }
+        }
+
+        /* Ensure virtual-tour button moves on small screens */
+        .virtual-tour-btn { left: 50px; bottom: 80px; }
+        @media (max-width:480px){
+            .virtual-tour-btn{ left: 12px; bottom: 12px; width: 88px; height: 88px; font-size: 11px; }
+        }
+    </style>
+
+    <script>
+        // Menu toggle script: waits for DOM and then wires the hamburger to the nav.
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggle = document.getElementById('menuToggle');
+            const navList = document.getElementById('mainNavList');
+
+            if (!toggle || !navList) return;
+
+            // update aria-expanded and show/hide
+            function setOpen(open) {
+                if (open) {
+                    navList.classList.add('show');
+                    toggle.setAttribute('aria-expanded', 'true');
+                    // prevent body scroll when menu open on small screens
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    navList.classList.remove('show');
+                    toggle.setAttribute('aria-expanded', 'false');
+                    document.body.style.overflow = '';
+                }
+            }
+
+            toggle.addEventListener('click', function (e) {
+                const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+                setOpen(!isOpen);
+            });
+
+            // close menu when clicking outside or pressing Escape
+            document.addEventListener('click', function (e) {
+                if (!navList.classList.contains('show')) return;
+                if (toggle.contains(e.target) || navList.contains(e.target)) return;
+                setOpen(false);
+            });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') setOpen(false);
+            });
+
+            // close menu on link click (mobile)
+            navList.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+        });
+    </script>
+</head>
+<body>
+    <header style="position: fixed; top: 0; left: 0; right: 0; width: 100%; z-index: 1000; background-color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+
+        <div class="logo">
+            <img src="images/logo1.png" alt="Resort Logo" style="height:50px;">
+        </div>
+        <!-- mobile hamburger -->
+        <button id="menuToggle" class="menu-toggle" aria-controls="mainNavList" aria-expanded="false" aria-label="Toggle navigation"
+            style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); z-index: 1200; width: 44px; height: 44px; background: transparent; border: 0; padding: 8px; color: #222;">
+            <span class="menu-icon" aria-hidden="true" style="font-size:30px; line-height:1; display:inline-block;">≡</span>
+        </button>
+
+        <nav class="navbar" role="navigation" aria-label="Main Navigation">
+            <ul id="mainNavList">
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="about.html">ABOUT US</a></li>
+                <li><a href="gallery.html">GALLERY</a></li>
+                <li><a href="activities.html">ACTIVITIES</a></li>
+                <li><a href="reviews.html">CUSTOMER REVIEWS</a></li>
+                <li><a href="blogs.html">BLOGS / ARTICLE</a></li>
+                <li><a href="contact.html">CONTACT US</a></li>
+            </ul>
+        </nav>
+        <div class="nav-buttons">
+            <a href="booking.html" class="btn booking-btn">BOOK NOW</a>
+       
+            
+        </div>
+    </header>
+    <!-- Floating Dark Mode Button -->
+<button id="themeButton" class="floating-theme-btn">
+    <span id="themeIcon">🌙</span>
+</button>
+
+
+
+    <section class="faq-section">
+        <h2><br><br>FAQs</h2>
+
+        <div class="faq-list" style="max-width:900px;margin:0 auto 40px;">
+            <style>
+            .faq-list .faq-item {
+                background:#fff;
+                border-radius:10px;
+                margin:12px 0;
+                box-shadow:0 6px 14px rgba(0,0,0,0.06);
+                overflow:hidden;
+                box-sizing: border-box;
+            }
+            .faq-question {
+                width:100%;
+                text-align:left;
+                padding:18px 20px;
+                font-size:18px;
+                font-weight:700;
+                color:#008c4a;
+                background:transparent;
+                border:0;
+                cursor:pointer;
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+            }
+            .faq-question:focus { outline:2px solid rgba(0,140,74,0.2); }
+            .faq-question .arrow {
+                transition: transform .25s ease;
+                font-size:18px;
+                color:#008c4a;
+            }
+            .faq-item .faq-answer {
+                max-height:0;
+                overflow:hidden;
+                transition: max-height .35s ease, padding .25s ease;
+                padding:0 20px;
+                color:#555;
+                font-size:16px;
+                line-height:1.6;
+                word-break:break-word;
+                overflow-wrap:break-word;
+                box-sizing: border-box;
+            }
+            .faq-item.open .faq-answer {
+                padding:16px 20px 22px;
+            }
+            .faq-item.open .faq-question .arrow {
+                transform: rotate(180deg);
+            }
+            /* dark mode tweaks (matches page) */
+            body.dark-mode .faq-list .faq-item { background:#152025; box-shadow:none; }
+            body.dark-mode .faq-question { color:#9be7a5; }
+            body.dark-mode .faq-answer { color:#cbd5ce; }
+            </style>
+
+            <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+                Where Is The Farm At San Benito Located?
+                <span class="arrow">▾</span>
+            </button>
+            <div class="faq-answer" aria-hidden="true">
+                The Farm at San Benito is located at  119 Barangay Tipacan 4217 Lipa City, Batangas Philippines.
+                  Its Manila Sales Office is located at  Shop No. 12,  Ground Floor,  The Peninsula Manila,
+                   Ayala corner Makati Avenue, 1226 Makati City, Philippines.<br><br>
+            </div>
+            </div>
+
+            <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+                How Far Is The Farm From Ninoy Aquino International Airport (NAIA) ?
+                <span class="arrow">▾</span>
+            </button>
+            <div class="faq-answer" aria-hidden="true">
+                The drive from the Manila-based airport to the resort is approximately 90 minutes, depending on the traffic.<br><br>
+            </div>
+            </div>
+
+            <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+                Do You Have Private Car Transfers?
+                <span class="arrow">▾</span>
+            </button>
+            <div class="faq-answer" aria-hidden="true">
+                Yes, we do have private car transfers.<br><br>
+            </div>
+            </div>
+
+            <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+                What are the complementary activities at The Farm?
+                <span class="arrow">▾</span>
+            </button>
+            <div class="faq-answer" aria-hidden="true">
+                Daily complimentary activities include Yoga, Mandala Flower Meditation, Power Walk, Wellness Talk, Sound Healing, Kid’s Activities, and more. <br><br>
+                </div>
+            </div>
+
+            <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+                Are Children Allowed At The Farm At San Benito?
+                <span class="arrow">▾</span>
+            </button>
+            <div class="faq-answer" aria-hidden="true">
+                Our holistic health and wellness sanctuary focuses on optimum well-being and is the perfect haven for adults.
+                 But we also welcome children to join their parents or guardians on these life-transformative healing holidays at The Farm! <br><br>
+            </div>
+            </div>
+
+            <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+                Are children allowed to swim in the common and private pools?
+                <span class="arrow">▾</span>
+            </button>
+            <div class="faq-answer" aria-hidden="true">
+                Yes, provided that the parents oversee their children. <br><br>
+            </div>
+            </div>
+
+            <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+                Do you have a kid's menu?
+                <span class="arrow">▾</span>
+            </button>
+            <div class="faq-answer" aria-hidden="true">
+                 Yes. We are a multi-generational eco-wellness resort catering to all age groups. <br><br>
+            </div>
+            </div>
+
+            <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+                Do you have kid’s activities?
+                <span class="arrow">▾</span>
+            </button>
+            <div class="faq-answer" aria-hidden="true">
+                 Yes. We offer Guided Walk & Visit to the Helifarm, Mandala Flower Meditation,
+                  Water Games and Sports, Duck Feeding, Sound Healing, Vegetable Picking, Composting,
+                   Functional Fitness for Kids, and Arts/Mind Activity Sessions. <br><br>
+            </div>
+            </div>
+
+            <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+                Do you have treatments for the kids?
+                <span class="arrow">▾</span>
+            </button>
+            <div class="faq-answer" aria-hidden="true">
+                Yes. <br><br>
+            </div>
+            </div>
+
+            <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+                Do you allow senior citizens?
+                <span class="arrow">▾</span>
+            </button>
+            <div class="faq-answer" aria-hidden="true">
+                 Yes, we are a multi-generational facility. We also offer programs for our elderly. <br><br>
+            </div>
+            </div>
+            <!--  -->
+            <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+                Is The Farm Safe For Pregnant Women? 
+                <span class="arrow">▾</span>
+            </button>
+            <div class="faq-answer" aria-hidden="true">
+                Yes, The Farm offers a variety of meals, treatments, and massages suitable for pregnant women. <br><br>
+            </div>
+            </div>
+
+            <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+                Do you allow pets to be brought by checked-in guests?
+                <span class="arrow">▾</span>
+            </button>
+            <div class="faq-answer" aria-hidden="true">
+                 Yes. The Farm is a pet-friendly sanctuary. We allow 1 pet per villa for non-pool villas and a maximum of 2 pets for pool villas. <br><br>
+            </div>
+            </div>
+
+            <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+                What’s your check-in and check-out time?
+                <span class="arrow">▾</span>
+            </button>
+            <div class="faq-answer" aria-hidden="true">
+                 You may come early to enjoy the facilities and attend complimentary activities however physical check-in and check out is at 3 PM and 12 NN respectively <br><br>
+            </div>
+            </div>
+
+            <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+                Can we bring our own food?
+                <span class="arrow">▾</span>
+            </button>
+            <div class="faq-answer" aria-hidden="true">
+                 Outside food & beverage are not allowed. <br><br>
+            </div>
+            </div>
+
+            <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+                Can we cook our own food?
+                <span class="arrow">▾</span>
+            </button>
+            <div class="faq-answer" aria-hidden="true">
+                 Simple reheating is allowed in the Master Villa, The Lakan, and Mahogany Luxury Villa kitchenettes. <br><br>
+            </div>
+            </div>
+
+            <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+                Do you allow day tours and how much?
+                <span class="arrow">▾</span>
+            </button>
+            <div class="faq-answer" aria-hidden="true">
+                 Yes, Day Tour is PHP 5500 ++ <br><br>
+            </div>
+            </div>
+
+            <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+                How Many Restaurants Does The Farm Have?
+                <span class="arrow">▾</span>
+            </button>
+            <div class="faq-answer" aria-hidden="true">
+                 Currently, the farm has 3 restaurants inside, which are ALIVE! Vegan Restaurant, PRANA Vegetarian Restaurant, and PESCE Pescetarian Restaurant. <br><br>
+            </div>
+            </div>
+
+            <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+                Can We Use A Drone?
+                <span class="arrow">▾</span>
+            </button>
+            <div class="faq-answer" aria-hidden="true">
+                 Most of our structures are open, and our suites and villas have glass walls, so they usually do not allow drones to protect and secure the privacy of their guests. <br><br>
+            </div>
+            </div>
+
+            <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+                What are the accurate map pins going to the property via Google Maps & Waze?
+                <span class="arrow">▾</span>
+            </button>
+            <div class="faq-answer" aria-hidden="true">
+                 Google Map: https://maps.app.goo.gl/DKkBWYY219XaLFqG7?g_st=ic
+                Waze: Use Waze to drive to The Farm at San Benito, Tipakan, Lipa: https://waze.com/ul/hwdqpnpd8y
+                For your guidance. <br><br>
+            </div>
+            </div>
+
+            <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+                What's the Recommended Attire for The Farm Guests?
+                <span class="arrow">▾</span>
+            </button>
+            <div class="faq-answer" aria-hidden="true">
+                 We recommend the following attire to ensure comfort and ease during your stay: <br><br>
+
+                -Casual and Comfortable – Lightweight, breathable clothing for day-to-day activities (For men: shirts, shorts and pants; For women: maxi dresses, shorts, shirts, skirts, blouses) <br><br>
+
+                -Yoga/Gym Attire – Flexible and comfortable clothing for yoga and wellness classes <br><br>
+
+                -Swimwear – Proper swim attire is required for dipping into your private pools and our public pools <br><br>
+
+            </div>
+            </div>
+
+            <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+                Are there additional requirements for Foreign Travelers?
+                <span class="arrow">▾</span>
+            </button>
+            <div class="faq-answer" aria-hidden="true">
+                 Yes, The eTravel System, a digital single data collection platform for passengers arriving in and departing from the Philippines,  shall be utilized for border control, health surveillance, and economic data analysis. <br><br>
+            </div>
+            </div>
+
+            <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+                Do you allow pets at the restaurants?
+                <span class="arrow">▾</span>
+            </button>
+            <div class="faq-answer" aria-hidden="true">
+                 The Upperdeck restaurant is now pet-friendly and open to walk-in day guests.  <br><br>
+            </div>
+            </div>
+
+            <!--  -->
+            <h3 style="text-align:center; font-size:28px; color:#008c4a; font-weight:700; margin:40px 0 20px;">
+                Life Changing Programs
+            </h3>
+            <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+                What is Detox?
+                <span class="arrow">▾</span>
+            </button>
+            <div class="faq-answer" aria-hidden="true">
+                 By detox, we mean the process of freeing our bodies of toxins accumulated due to unhealthy food, stress, and the effects of the polluted environment on the body. <br><br>
+            </div>
+            </div>
+
+            <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+                What is Colon Hydrotherapy?
+                <span class="arrow">▾</span>
+            </button>
+            <div class="faq-answer" aria-hidden="true">
+                 Medical history shows that colon irrigations and enemas are among the oldest healthcare practice to detoxify the liver and cleanse the rectal vault. <br><br>
+            </div>
+            </div>
+
+            <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+                What Services Are Given At The Holistic Medical Sanctuary?
+                <span class="arrow">▾</span>
+            </button>
+            <div class="faq-answer" aria-hidden="true">
+                 At our Holistic Medical Sanctuary, a range of services is offered to provide comprehensive,
+                  holistic medical care including medical consultations, diagnostic assessments, integrative
+                   medicine, detoxification programs, intravenous therapies, energy healing, and many more.  <br><br>
+            </div>
+            </div>
+
+            <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+                What Services Are Offered At The Acqua Hydrotherapy Sanctuary?
+                <span class="arrow">▾</span>
+            </button>
+            <div class="faq-answer" aria-hidden="true">
+                 The Acqua Hydrotherapy Sanctuary offers a range of treatments and experiences that are designed to promote relaxation, detoxification, and rejuvenation. <br><br>
+            </div>
+            </div>
+
+            <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+                What Services Are Offered In The Healing Sanctuary Spa?
+                <span class="arrow">▾</span>
+            </button>
+            <div class="faq-answer" aria-hidden="true">
+                 The Healing Sanctuary Spa offers a wide range of services that promote relaxation, rejuvenation, overall health and wellness, and general well-being.  <br><br>
+            </div>
+            </div>
+
+            <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+                Can We Cancel Our Treatments?
+                <span class="arrow">▾</span>
+            </button>
+            <div class="faq-answer" aria-hidden="true">
+                 Once treatments are booked and settled, they are considered guaranteed. Guests are no longer allowed to cancel the reserved treatments. <br><br>
+            </div>
+            </div>
+
+
+
+
+
+            <!--  -->
+            <script>
+            (function(){
+                const items = Array.from(document.querySelectorAll('.faq-item'));
+                // initialize ARIA and collapsed state
+                items.forEach(item => {
+                const btn = item.querySelector('.faq-question');
+                const ans = item.querySelector('.faq-answer');
+                btn.setAttribute('aria-expanded', 'false');
+                ans.setAttribute('aria-hidden', 'true');
+                ans.style.maxHeight = '0';
+                // ensure images or long content wrap
+                ans.style.overflow = 'hidden';
+                });
+
+                // toggle handler
+                items.forEach(item => {
+                const btn = item.querySelector('.faq-question');
+                const ans = item.querySelector('.faq-answer');
+                btn.addEventListener('click', () => {
+                    const willOpen = !item.classList.contains('open');
+                    // close any other open item if you prefer accordion behavior; remove if multiple open allowed
+                    // items.forEach(i => {
+                    //     if (i !== item && i.classList.contains('open')) { i.classList.remove('open'); i.querySelector('.faq-answer').style.maxHeight = '0'; i.querySelector('.faq-answer').setAttribute('aria-hidden','true'); i.querySelector('.faq-question').setAttribute('aria-expanded','false'); }
+                    // });
+                    item.classList.toggle('open', willOpen);
+                    if (willOpen) {
+                    // set explicit maxHeight to match content so it "fits"
+                    ans.style.maxHeight = ans.scrollHeight + 'px';
+                    ans.setAttribute('aria-hidden', 'false');
+                    btn.setAttribute('aria-expanded', 'true');
+                    } else {
+                    ans.style.maxHeight = '0';
+                    ans.setAttribute('aria-hidden', 'true');
+                    btn.setAttribute('aria-expanded', 'false');
+                    }
+                });
+                });
+
+                // recompute heights on resize so opened answers still fit after layout changes
+                window.addEventListener('resize', () => {
+                // debounce to reduce thrash
+                clearTimeout(window._faqResizeTimer);
+                window._faqResizeTimer = setTimeout(() => {
+                    items.forEach(item => {
+                    if (item.classList.contains('open')) {
+                        const a = item.querySelector('.faq-answer');
+                        a.style.maxHeight = a.scrollHeight + 'px';
+                    }
+                    });
+                }, 120);
+                });
+            })();
+            </script>
+        </div>
+
+
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab(event, 'cancellation')">Cancellation Policy</button>
+            <button class="tab-button" onclick="openTab(event, 'guidelines')">Resort Guidelines</button>
+            
+        </div>
+
+        <div id="cancellation" class="tab-content" style="position: relative;">
+            <p>Our cancellation policy allows guests to cancel their reservations up to 48 hours before the check-in date without any charges. Cancellations made within 48 hours of arrival will incur a fee equivalent to one night's stay. We encourage guests to inform us in advance in case of any changes.</p>
+            <img src="images/logo1.png" alt="Cancellation Policy" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 100%; max-width: 600px; border-radius: 8px;">
+        </div>
+
+        <div id="guidelines" class="tab-content" style="display:none; position: relative;">
+            <p>Guests are expected to follow resort guidelines including maintaining noise levels, respecting other guests, and adhering to pool and beach rules. Smoking is only allowed in designated areas. Pets are welcome in certain rooms but must be approved prior to arrival.</p>
+            <img src="images/logo1.png" alt="Resort Guidelines" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 100%; max-width: 600px; border-radius: 8px;">
+        </div>
+
+        
+    </section>
+
+    <style>
+        body.dark-mode .faq-section h2 {
+            color: #4ade80;
+        }
+
+        body.dark-mode .tab-button {
+            background: #1f2937;
+            color: #4ade80;
+            border-color: #4ade80;
+        }
+
+        body.dark-mode .tab-button.active {
+            background: #4ade80;
+            color: #1f2937;
+        }
+
+        body.dark-mode .tab-content {
+            background: #1f2937;
+            color: #e5e7eb;
+        }
+
+        body.dark-mode .tab-content p {
+            color: #e5e7eb;
+        }
+    </style>
+
+
+    <footer style="background: #034b09; color: #fff; padding: 30px 0; text-align: center; margin-top: 40px;">
+            <div style="max-width: 1200px; margin: 0 auto;">
+                <p style="margin: 0;">&copy; 2024 The Farm at San Benito. All rights reserved.</p>
+                <p style="margin: 8px 0 0 0; font-size: 0.95em;">
+                    <a href="terms.html" style="color: #fff; text-decoration: underline; margin-right: 15px;">Privacy Policy</a>
+                    <a href="terms.html" style="color: #fff; text-decoration: underline;">Terms of Service</a>
+                </p>
+            </div>
+        </footer>
+
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tabbuttons;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tabbuttons = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tabbuttons.length; i++) {
+                tabbuttons[i].className = tabbuttons[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+    </script>
+
+
+    <script src="darkmode.js"></script>
+
+</body>
+</html>

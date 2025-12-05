@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - The Farm at San Benito</title>
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const logoImg = document.querySelector('.logo img');
+        if (!logoImg) return;
+        const parent = logoImg.parentElement;
+        if (parent && parent.tagName.toLowerCase() === 'a') {
+            parent.href = 'index.html';
+            parent.setAttribute('aria-label', 'Home');
+        } else {
+            const a = document.createElement('a');
+            a.href = 'index.html';
+            a.setAttribute('aria-label', 'Home');
+            a.style.display = 'inline-block';
+            parent.replaceChild(a, logoImg);
+            a.appendChild(logoImg);
+        }
+    });
+    </script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+        :root{
+            --header-height: 68px;
+            --accent-green: #034b09;
+            --light-bg: #fff;
+            --dark-bg: #1a1a1a;
+        }
+
+        /* Dark mode base tweaks */
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: #e0e0e0;
+        }
+        body.dark-mode header {
+            background-color: #2d2d2d !important;
+            color: #e0e0e0;
+        }
+        body.dark-mode a { color: #f0f0f0; }
+        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3 { color: #e0e0e0; }
+        body.dark-mode p { color: #ffffff; }
+
+        /* Header / nav layout */
+        header {
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        .logo { display:flex; align-items:center; }
+        .logo img { height:44px; width:auto; display:block; }
+
+        nav.navbar {
+            display:flex;
+            align-items:center;
+            flex:1;
+            justify-content: center;
+        }
+        nav.navbar ul {
+            list-style:none;
+            display:flex;
+            gap: 18px;
+            margin:0;
+            padding:0;
+            align-items:center;
+        }
+        nav.navbar a {
+            text-decoration:none;
+            color: inherit;
+            font-weight:700;
+            letter-spacing:0.02em;
+        }
+
+        .nav-buttons { margin-left:auto; }
+
+        /* Hamburger (mobile) */
+        .menu-toggle {
+            display: none;
+            background: transparent;
+            border: 0;
+            cursor: pointer;
+            padding: 8px;
+            margin-left: 8px;
+        }
+        .menu-toggle .bar {
+            display:block;
+            width:22px;
+            height:2px;
+            background:#222;
+            margin:4px 0;
+            transition: transform .2s ease, opacity .2s ease;
+        }
+        body.dark-mode .menu-toggle .menu-icon { color:#fff; }
+
+        /* Mobile responsive behavior */
+        @media (max-width: 900px) {
+            /* make header compact */
+            header { padding: 0 12px; gap: 8px; }
+            nav.navbar { justify-content: flex-end; }
+            nav.navbar ul { 
+                display: none; /* hide default list on small screens */
+                position: absolute;
+                top: calc(var(--header-height) + 8px);
+                right: 12px;
+                background: var(--light-bg);
+                border-radius: 8px;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+                flex-direction: column;
+                padding: 10px;
+                min-width: 220px;
+                z-index: 1100;
+            }
+            body.dark-mode nav.navbar ul { background: #222; box-shadow: 0 8px 24px rgba(0,0,0,0.35); }
+
+            nav.navbar ul.show {
+                display:flex;
+            }
+            nav.navbar ul li { padding: 8px 6px; }
+            nav.navbar ul a { display:block; width:100%; }
+
+            .menu-toggle { display:inline-flex; align-items:center; }
+
+            /* collapse nav-buttons into menu (so header stays compact) */
+            .nav-buttons { display:none; }
+        }
+
+        /* Make a few main sections adapt nicely */
+        .hero { padding-top: var(--header-height); min-height: 60vh; background-size:cover; }
+        .about-section { flex-direction: column; gap: 20px; padding: 20px; }
+        @media (min-width: 900px) {
+            .about-section { flex-direction: row; padding: 40px 60px; }
+        }
+
+        /* Ensure virtual-tour button moves on small screens */
+        .virtual-tour-btn { left: 50px; bottom: 80px; }
+        @media (max-width:480px){
+            .virtual-tour-btn{ left: 12px; bottom: 12px; width: 88px; height: 88px; font-size: 11px; }
+        }
+    </style>
+     <script>
+        // Menu toggle script: waits for DOM and then wires the hamburger to the nav.
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggle = document.getElementById('menuToggle');
+            const navList = document.getElementById('mainNavList');
+
+            if (!toggle || !navList) return;
+
+            // update aria-expanded and show/hide
+            function setOpen(open) {
+                if (open) {
+                    navList.classList.add('show');
+                    toggle.setAttribute('aria-expanded', 'true');
+                    // prevent body scroll when menu open on small screens
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    navList.classList.remove('show');
+                    toggle.setAttribute('aria-expanded', 'false');
+                    document.body.style.overflow = '';
+                }
+            }
+
+            toggle.addEventListener('click', function (e) {
+                const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+                setOpen(!isOpen);
+            });
+
+            // close menu when clicking outside or pressing Escape
+            document.addEventListener('click', function (e) {
+                if (!navList.classList.contains('show')) return;
+                if (toggle.contains(e.target) || navList.contains(e.target)) return;
+                setOpen(false);
+            });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') setOpen(false);
+            });
+
+            // close menu on link click (mobile)
+            navList.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+        });
+    </script>
+<body>
+    <header style="position: fixed; top: 0; left: 0; right: 0; width: 100%; z-index: 1000; background-color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+        <div class="logo">
+            <img src="images/logo1.png" alt="Resort Logo" style="height:50px;">
+        </div>
+
+         <button id="menuToggle" class="menu-toggle" aria-controls="mainNavList" aria-expanded="false" aria-label="Toggle navigation"
+            style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); z-index: 1200; width: 44px; height: 44px; background: transparent; border: 0; padding: 8px; color: #222;">
+            <span class="menu-icon" aria-hidden="true" style="font-size:30px; line-height:1; display:inline-block;">≡</span>
+        </button>
+
+        <nav class="navbar" role="navigation" aria-label="Main Navigation">
+            <ul id="mainNavList">
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="gallery.html">GALLERY</a></li>
+                <li><a href="activities.html">ACTIVITIES</a></li>
+                <li><a href="reviews.html">CUSTOMER REVIEWS</a></li>
+                <li><a href="blogs.html">BLOGS / ARTICLE</a></li>
+                <li><a href="contact.html">CONTACT US</a></li>
+                <li><a href="faqs.html">FAQS</a></li>
+            </ul>
+        </nav>
+        <div class="nav-buttons">
+            <a href="booking.html" class="btn booking-btn">BOOK NOW</a>
+            
+            
+</li>
+        </div>
+    </header>
+    <!-- Floating Dark Mode Button -->
+<button id="themeButton" class="floating-theme-btn">
+    <span id="themeIcon">🌙</span>
+</button>
+<br><br><br>
+
+    <section class="about-hero" style="background: url('images/people.jpg') center/cover no-repeat; height: 60vh; display: flex; align-items: center; justify-content: center; text-align: center; color: white;">
+        <div>
+            <h1>About Us</h1>
+            <p>Discover the story behind The Resort Haven</p>
+        </div>
+    </section>
+
+    <section class="about-content" style="padding: 60px 20px; max-width: 1000px; margin: 0 auto;">
+        <h2 style="text-align:center; color:#008c4a; margin-bottom:40px;">History of The Farm at San Benito</h2>
+        <p style="font-size:18px; line-height:1.8; text-align: justify;">
+           A Sanctuary Born from Purpose
+The Farm began in 2002 with a bold and focused mission: to create a sanctuary where people could cleanse, heal,
+ and reclaim their vitality. From its humble origins on a verdant coconut plantation in Lipa, Batangas, the resort
+  pioneered detox-based wellness in the Philippines, quickly gaining recognition as one of the world’s most acclaimed
+   holistic medical destinations.
+<br><br>
+For over 20 years, we’ve welcomed guests from around the globe seeking not just rest, but transformation. 
+Our integrative approach—led by a team of internationally trained doctors, therapists, nutritionists, and 
+healers—has helped thousands address chronic illnesses, stress, and lifestyle imbalances through personalized, evidence-based care.
+<br><br>
+During the pandemic, when borders closed, The Farm remained open—becoming a safe haven for guests seeking
+ healing, connection, and clarity during uncertain times.
+<br><br>
+This pivotal moment led to the creation of family residences, group-friendly spaces, and expanded programming 
+for both personal and collective transformation.
+<br><br>
+Today, The Farm welcomes not only wellness program guests, but anyone seeking to live with greater vitality, 
+balance, and purpose—offering pathways to well-being that meet you exactly where you are.</p>
+                <br><br>
+               <h2 style="text-align:center; color:#008c4a; margin-bottom:40px;">Mission</h2>
+        <p style="font-size:18px; line-height:1.8; text-align: justify;">
+            Our mission is to promote holistic wellness by integrating medical expertise,
+             natural therapies, and mindful living. We aim to guide every guest toward healthier
+              lifestyle habits that support physical, mental, and emotional wellbeing.
+               Through compassionate care and evidence-based practices, we strive to help
+                individuals achieve lasting balance and vitality.</p>
+                <br><br>
+               <h2 style="text-align:center; color:#008c4a; margin-bottom:40px;">Vision</h2>
+        <p style="font-size:18px; line-height:1.8; text-align: justify;">
+            Our vision is to be the leading wellness sanctuary in Asia, inspiring people around
+             the world to embrace natural and sustainable healing. We envision a future where
+              holistic wellbeing is accessible, respected, and practiced in everyday life.
+               Through innovation and lifelong commitment to health, we aim to create a global
+                community that values balance, harmony, and mindful living.</p>
+
+
+        <div style="display:flex; flex-wrap:wrap; gap:40px; margin-top:60px;">
+            <div style="flex:1; min-width:280px;">
+            <img src="images/residence.jpg" alt="Luxury Rooms" style="width:100%; height:250px; object-fit:cover; border-radius:10px;">
+            <h3 style="margin-top:15px; color:#008c4a;">Luxurious Rooms</h3>
+            <p style="font-size:16px; line-height:1.6;">Experience comfort and elegance in our meticulously designed rooms that provide stunning views and ultimate relaxation.</p>
+            </div>
+            <div style="flex:1; min-width:280px;">
+            <img src="images/mind-yoga-opt.jpg" alt="Activities" style="width:100%; height:250px; object-fit:cover; border-radius:10px;">
+            <h3 style="margin-top:15px; color:#008c4a;">Exciting Activities</h3>
+            <p style="font-size:16px; line-height:1.6;">From water sports to guided nature trails, we offer a variety of activities to keep every guest entertained and rejuvenated.</p>
+            </div>
+            <div style="flex:1; min-width:280px;">
+            <img src="images/dining11.jpg" alt="Dining" style="width:100%; height:250px; object-fit:cover; border-radius:10px;">
+            <h3 style="margin-top:15px; color:#008c4a;">Gourmet Dining</h3>
+            <p style="font-size:16px; line-height:1.6;">Indulge in a culinary journey at our restaurants featuring locally sourced ingredients and a variety of international cuisines.</p>
+            </div>
+        </div>
+
+    </section>
+
+    <footer style="background: #034b09; color: #fff; padding: 30px 0; text-align: center; margin-top: 40px;">
+            <div style="max-width: 1200px; margin: 0 auto;">
+                <p style="margin: 0;">&copy; 2024 The Farm at San Benito. All rights reserved.</p>
+                <p style="margin: 8px 0 0 0; font-size: 0.95em;">
+                    <a href="terms.html" style="color: #fff; text-decoration: underline; margin-right: 15px;">Privacy Policy</a>
+                    <a href="terms.html" style="color: #fff; text-decoration: underline;">Terms of Service</a>
+                </p>
+            </div>
+        </footer>
+
+    <script src="darkmode.js"></script>
+
+</body>
+</html>

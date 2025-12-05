@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suite - The Farm at San Benito</title>
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const logoImg = document.querySelector('.logo img');
+        if (!logoImg) return;
+        const parent = logoImg.parentElement;
+        if (parent && parent.tagName.toLowerCase() === 'a') {
+            parent.href = 'index.html';
+            parent.setAttribute('aria-label', 'Home');
+        } else {
+            const a = document.createElement('a');
+            a.href = 'index.html';
+            a.setAttribute('aria-label', 'Home');
+            a.style.display = 'inline-block';
+            parent.replaceChild(a, logoImg);
+            a.appendChild(logoImg);
+        }
+    });
+    </script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+        body.dark-mode header {
+            background-color: #2d2d2d !important;
+            color: #e0e0e0;
+        }
+        body.dark-mode a {
+            color: #64b5f6;
+        }
+        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3 {
+            color: #e0e0e0;
+        }
+        body.dark-mode p {
+            color: #b0b0b0;
+        }
+        :root{
+            --header-height: 68px;
+            --accent-green: #034b09;
+            --light-bg: #fff;
+            --dark-bg: #1a1a1a;
+        }
+
+        /* Dark mode base tweaks */
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: #e0e0e0;
+        }
+        body.dark-mode header {
+            background-color: #2d2d2d !important;
+            color: #e0e0e0;
+        }
+        body.dark-mode a { color: #f0f0f0; }
+        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3 { color: #e0e0e0; }
+        body.dark-mode p { color: #ffffff; }
+
+        /* Header / nav layout */
+        header {
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        .logo { display:flex; align-items:center; }
+        .logo img { height:44px; width:auto; display:block; }
+
+        nav.navbar {
+            display:flex;
+            align-items:center;
+            flex:1;
+            justify-content: center;
+        }
+        nav.navbar ul {
+            list-style:none;
+            display:flex;
+            gap: 18px;
+            margin:0;
+            padding:0;
+            align-items:center;
+        }
+        nav.navbar a {
+            text-decoration:none;
+            color: inherit;
+            font-weight:700;
+            letter-spacing:0.02em;
+        }
+
+        .nav-buttons { margin-left:auto; }
+
+        /* Hamburger (mobile) */
+        .menu-toggle {
+            display: none;
+            background: transparent;
+            border: 0;
+            cursor: pointer;
+            padding: 8px;
+            margin-left: 8px;
+        }
+        .menu-toggle .bar {
+            display:block;
+            width:22px;
+            height:2px;
+            background:#222;
+            margin:4px 0;
+            transition: transform .2s ease, opacity .2s ease;
+        }
+        body.dark-mode .menu-toggle .menu-icon { color:#fff; }
+
+        /* Mobile responsive behavior */
+        @media (max-width: 900px) {
+            /* make header compact */
+            header { padding: 0 12px; gap: 8px; }
+            nav.navbar { justify-content: flex-end; }
+            nav.navbar ul { 
+                display: none; /* hide default list on small screens */
+                position: absolute;
+                top: calc(var(--header-height) + 8px);
+                right: 12px;
+                background: var(--light-bg);
+                border-radius: 8px;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+                flex-direction: column;
+                padding: 10px;
+                min-width: 220px;
+                z-index: 1100;
+            }
+            body.dark-mode nav.navbar ul { background: #222; box-shadow: 0 8px 24px rgba(0,0,0,0.35); }
+
+            nav.navbar ul.show {
+                display:flex;
+            }
+            nav.navbar ul li { padding: 8px 6px; }
+            nav.navbar ul a { display:block; width:100%; }
+
+            .menu-toggle { display:inline-flex; align-items:center; }
+
+            /* collapse nav-buttons into menu (so header stays compact) */
+            .nav-buttons { display:none; }
+        }
+
+        /* Make a few main sections adapt nicely */
+        .hero { padding-top: var(--header-height); min-height: 60vh; background-size:cover; }
+        .about-section { flex-direction: column; gap: 20px; padding: 20px; }
+        @media (min-width: 900px) {
+            .about-section { flex-direction: row; padding: 40px 60px; }
+        }
+
+        /* Ensure virtual-tour button moves on small screens */
+        .virtual-tour-btn { left: 50px; bottom: 80px; }
+        @media (max-width:480px){
+            .virtual-tour-btn{ left: 12px; bottom: 12px; width: 88px; height: 88px; font-size: 11px; }
+        }
+    </style>
+
+    <script>
+        // Menu toggle script: waits for DOM and then wires the hamburger to the nav.
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggle = document.getElementById('menuToggle');
+            const navList = document.getElementById('mainNavList');
+
+            if (!toggle || !navList) return;
+
+            // update aria-expanded and show/hide
+            function setOpen(open) {
+                if (open) {
+                    navList.classList.add('show');
+                    toggle.setAttribute('aria-expanded', 'true');
+                    // prevent body scroll when menu open on small screens
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    navList.classList.remove('show');
+                    toggle.setAttribute('aria-expanded', 'false');
+                    document.body.style.overflow = '';
+                }
+            }
+
+            toggle.addEventListener('click', function (e) {
+                const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+                setOpen(!isOpen);
+            });
+
+            // close menu when clicking outside or pressing Escape
+            document.addEventListener('click', function (e) {
+                if (!navList.classList.contains('show')) return;
+                if (toggle.contains(e.target) || navList.contains(e.target)) return;
+                setOpen(false);
+            });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') setOpen(false);
+            });
+
+            // close menu on link click (mobile)
+            navList.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+        });
+    </script>
+<body>
+    <header style="position: fixed; top: 0; left: 0; right: 0; width: 100%; z-index: 1000; background-color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+        <div class="logo">
+            <img src="images/logo1.png" alt="Resort Logo" style="height:50px;">
+        </div>
+        <!-- mobile hamburger -->
+        <button id="menuToggle" class="menu-toggle" aria-controls="mainNavList" aria-expanded="false" aria-label="Toggle navigation"
+            style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); z-index: 1200; width: 44px; height: 44px; background: transparent; border: 0; padding: 8px; color: #222;">
+            <span class="menu-icon" aria-hidden="true" style="font-size:30px; line-height:1; display:inline-block;">≡</span>
+        </button>
+
+        <nav class="navbar" role="navigation" aria-label="Main Navigation">
+            <ul id="mainNavList">
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="about.html">ABOUT US</a></li>
+                <li><a href="gallery.html">GALLERY</a></li>
+                <li><a href="activities.html">ACTIVITIES</a></li>
+                <li><a href="reviews.html">CUSTOMER REVIEWS</a></li>
+                <li><a href="blogs.html">BLOGS / ARTICLE</a></li>
+                <li><a href="contact.html">CONTACT US</a></li>
+                <li><a href="faqs.html">FAQS</a></li>
+            </ul>
+        </nav>
+        <div class="nav-buttons">
+            <a href="booking.html" class="btn booking-btn">BOOK NOW</a>
+            
+            
+</li>
+        </div>
+    </header>
+    <!-- Floating Dark Mode Button -->
+<button id="themeButton" class="floating-theme-btn">
+    <span id="themeIcon">🌙</span>
+</button>
+<br><br><br><br>
+
+    <section class="about-hero" style="background: url('images/suite/1.jpg') center/cover no-repeat; height: 60vh; display: flex; align-items: center; justify-content: center; text-align: center; color: white;">
+        <div>
+            <h1 style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: clamp(28px, 5vw, 56px); font-weight:700; color: #fff; margin:0; -webkit-text-stroke: 0.9px #000; text-shadow: 1px 1px 0 rgba(0,0,0,0.85), -1px -1px 0 rgba(0,0,0,0.85), 1px -1px 0 rgba(0,0,0,0.85), -1px 1px 0 rgba(0,0,0,0.85);">
+                Palmera Suites
+            </h1>
+            
+        </div>
+    </section>
+    <section class="about-gallery">
+        <style>
+            :root{
+                --gap: 20px;
+                --accent: #0b7a0b;
+            }
+
+            /* Make gallery full-bleed (use the whole width of the viewport) */
+            .about-gallery {
+                width: 100vw;
+                max-width: none;
+                margin-left: calc(50% - 50vw);
+                margin-right: calc(50% - 50vw);
+                box-sizing: border-box;
+                padding: 24px 40px;
+                margin-top: 40px;
+                margin-bottom: 40px;
+                background: transparent;
+            }
+
+            /* Columns layout that wraps to avoid overflow */
+            .about-gallery .columns {
+                display: flex;
+                gap: var(--gap);
+                align-items: flex-start;
+                flex-wrap: wrap;
+                max-width: 1400px;
+                margin: 0 auto;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            /* Left column */
+            .about-gallery .left {
+                flex: 0 1 35%;
+                min-width: 240px;
+                box-sizing: border-box;
+                background: transparent;
+                padding: 0;
+                display:flex;
+                flex-direction:column;
+                justify-content:space-between;
+            }
+            .about-gallery .left h2 {
+                margin: 0 0 12px 0;
+                font-size: clamp(1.25rem, 2.6vw, 1.9rem);
+                color: #02922d;
+                line-height: 1.15;
+            }
+            .about-gallery .left p {
+                margin: 0;
+                line-height: 1.6;
+                color: #444;
+                font-size: clamp(0.95rem, 2.2vw, 1.05rem);
+            }
+
+            /* Rate styling */
+            .about-gallery .rate {
+                font-weight: 700;
+                font-size: 1.05rem;
+                color: #0b7a0b;
+                background: #ffffff;
+                padding: 8px 12px;
+                border-radius: 8px;
+                border: 2px solid var(--accent); /* green stroke */
+                
+            }
+
+            /* Right column */
+            .about-gallery .right {
+                flex: 1 1 60%;
+                display: flex;
+                flex-direction: column;
+                box-sizing: border-box;
+                min-width: 260px;
+            }
+
+            /* Use aspect-ratio so images scale nicely across viewports */
+            .about-gallery .large-img {
+                width: 100%;
+                aspect-ratio: 16/9;
+                border-radius: 8px;
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+                transition: transform .18s ease;
+            }
+            .about-gallery .large-img:active { transform: scale(.995); }
+
+            .about-gallery .thumbs {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+                margin-top: 12px;
+            }
+            .about-gallery .thumb {
+                aspect-ratio: 4/3;
+                border-radius: 6px;
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+                cursor: pointer;
+                border: 2px solid transparent;
+                transition: border-color .12s ease, transform .12s ease;
+            }
+            .about-gallery .thumb:focus,
+            .about-gallery .thumb:hover {
+                transform: translateY(-3px);
+                border-color: rgba(0,0,0,0.12);
+            }
+            .about-gallery .thumb.selected {
+                border-color: var(--accent);
+            }
+
+            /* Buttons on the left bottom */
+            .about-gallery .actions {
+                display:flex;
+                gap:12px;
+                align-items:center;
+                margin-top:16px;
+                justify-content:space-between;
+            }
+            .about-gallery .btn.booking-btn{
+                padding:10px 14px;
+                background:var(--accent);
+                color:#fff;
+                border-radius:6px;
+                text-decoration:none;
+                display:inline-block;
+                font-weight:700;
+            }
+
+            /* Dark mode overrides */
+            body.dark-mode .about-gallery .left {
+                background: rgba(255,255,255,0.02);
+                border-radius: 8px;
+                padding: 16px;
+            }
+            body.dark-mode .about-gallery .left h2 { color: #04be1d; }
+            body.dark-mode .about-gallery .left p { color: #cfd8e3; }
+            body.dark-mode .about-gallery .rate {
+                color: #ffffff;
+                background: #1a1a1a;
+                text-align: center;
+            }
+            body.dark-mode .about-gallery .btn.booking-btn { background: #0b7a0b; color:#fff; }
+
+            /* Smaller screens: stack columns and tune sizes */
+            @media (max-width: 900px) {
+                .about-gallery { padding: 18px 18px; margin-top: 20px; margin-bottom: 20px; }
+                .about-gallery .columns { flex-direction: column; gap: 18px; max-width: 100%; }
+                .about-gallery .left { order: 2; flex: 0 0 auto; min-width: 0; padding: 0; }
+                .about-gallery .right { order: 1; flex: 0 0 auto; min-width: 0; }
+                .about-gallery .thumbs { grid-template-columns: repeat(3, 1fr); }
+                .about-gallery .large-img { aspect-ratio: 4/3; border-radius: 8px; min-height: 160px; }
+                .about-gallery .actions { flex-direction: column; gap:10px; align-items:flex-start; }
+                .about-gallery .rate { width: 100%; text-align:left; }
+                .about-gallery .btn.booking-btn { width: 100%; text-align:center; }
+            }
+
+            @media (max-width: 520px) {
+                .about-gallery { padding: 12px 12px; }
+                .about-gallery .left h2 { font-size: clamp(1.1rem, 5vw, 1.4rem); }
+                .about-gallery .thumbs { grid-template-columns: repeat(2, 1fr); }
+                .about-gallery .thumb { aspect-ratio: 3/2; }
+                .about-gallery .large-img { aspect-ratio: 3/2; min-height: 140px; }
+                .about-gallery .actions { align-items:stretch; }
+            }
+
+            /* Prevent horizontal overflow on very small viewports */
+            @media (max-width: 400px) {
+                .about-gallery { padding-left: 10px; padding-right: 10px; }
+            }
+        </style>
+
+        <div class="columns">
+            <div class="left">
+                <div>
+                    <h2>Palmera Suites</h2>
+                    <p>
+                        Our Palmera Suites celebrate the masterful design of tropical modern style.
+                         Each suite is tastefully appointed with 12-foot high interiors and a spacious
+                          semi–private garden and lanais. In true tropical fashion, all suites are provided
+                           with indoor baths and open-air showers.
+
+                        <br><br>
+
+                        Bask in its masterful and spacious-designed rooms 
+                        with combined tropical elements and modern features.
+                          And to bring out the nature-lover in you, you'd find
+                           its charming lanai adorable as you enjoy the exclusive
+                            serene sanctuary. You can choose to bathe in private in its
+                             indoor water closet, or listen to chirping birds in the
+                              background as you take advantage of its open-air rain showers.
+
+
+                        <br><br>
+                        Features:
+                        
+                        <br>✔️Spacious living area and dining area
+                        <br>✔️Home office area with toilet and bath
+                        <br>✔️Gourmet kitchen and mini bar
+                        <br>✔️Service kitchen with cooktop
+                        <br>✔️Refrigerator
+                        <br>✔️Outdoor swimming pool and gazebo
+                        <br>✔️Pool loungers at pool deck
+                        <br>✔️Master Bedroom
+                        <br>✔️2nd Bedroom
+                        
+                        
+                    </p>
+                </div>
+
+                <!-- Bottom row: left = rate, right = Book Now button -->
+                <div class="actions">
+                    <div class="rate" aria-hidden="true" style="text-align: center;">Rate: $300 / night</div>
+                    <a href="booking.html" class="btn booking-btn" role="button" aria-label="Book now for Palmera Suites">
+                        Book Now
+                    </a>
+                </div>
+            </div>
+
+            <div class="right">
+                <style>
+                    /* Mobile-friendly tweaks for thumbs + large image */
+                    @media (max-width: 900px) {
+                        /* make thumbs a horizontal scroller on small screens */
+                        .about-gallery .thumbs {
+                            display: flex !important;
+                            gap: 10px;
+                            overflow-x: auto;
+                            -webkit-overflow-scrolling: touch;
+                            padding: 8px 4px;
+                            scroll-snap-type: x mandatory;
+                        }
+                        .about-gallery .thumbs .thumb {
+                            flex: 0 0 auto;
+                            min-width: 34%;
+                            scroll-snap-align: start;
+                        }
+
+                        /* ensure the large image stays proportional and not too tall */
+                        .about-gallery .large-img {
+                            aspect-ratio: 4 / 3;
+                            min-height: 160px;
+                        }
+                    }
+
+                    @media (max-width: 520px) {
+                        .about-gallery .thumbs .thumb { min-width: 48%; }
+                        .about-gallery .large-img { min-height: 280px; }
+                    }
+
+                    /* keep visible focus ring for keyboard users */
+                    .about-gallery .thumb:focus {
+                        outline: 3px solid rgba(4,190,29,0.22);
+                        outline-offset: 2px;
+                    }
+                </style>
+
+                <!-- Large image: responsive aspect-ratio so it scales nicely -->
+                <div id="largeImage" class="large-img" role="img" aria-label="Palmera Suite image"
+                     style="background-image: url('images/suite/2.jpg');"></div>
+
+                <!-- Thumbs: use buttons for better accessibility; on narrow screens this becomes a horizontal scroller -->
+                <div class="thumbs" role="list" aria-label="Gallery thumbnails">
+                    <button class="thumb selected" type="button" data-src="images/suite/2.jpg" aria-label="View image 1"
+                         style="background-image: url('images/suite/2.jpg');"></button>
+
+                    <button class="thumb" type="button" data-src="images/suite/3.jpg" aria-label="View image 2"
+                         style="background-image: url('images/suite/3.jpg');"></button>
+
+                    <button class="thumb" type="button" data-src="images/suite/4.jpg" aria-label="View image 3"
+                         style="background-image: url('images/suite/4.jpg');"></button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // Simple thumb -> large image behavior for mobile/touch
+            (function () {
+                const large = document.getElementById('largeImage');
+                const thumbs = document.querySelectorAll('.about-gallery .thumb');
+                if (!large || !thumbs.length) return;
+
+                function setLarge(src, selectedThumb) {
+                    large.style.backgroundImage = 'url(' + src + ')';
+                    thumbs.forEach(t => t.classList.remove('selected'));
+                    if (selectedThumb) selectedThumb.classList.add('selected');
+                }
+
+                thumbs.forEach(t => {
+                    t.addEventListener('click', () => setLarge(t.dataset.src, t));
+                    t.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            setLarge(t.dataset.src, t);
+                        }
+                    });
+                });
+
+                // make sure first thumb is selected initially
+                const first = document.querySelector('.about-gallery .thumb');
+                if (first) setLarge(first.dataset.src, first);
+            })();
+        </script>
+    </section></div>
+    
+
+    <footer style="background: #034b09; color: #fff; padding: 30px 0; text-align: center; margin-top: 40px;">
+            <div style="max-width: 1200px; margin: 0 auto;">
+                <p style="margin: 0;">&copy; 2024 The Farm at San Benito. All rights reserved.</p>
+                <p style="margin: 8px 0 0 0; font-size: 0.95em;">
+                    <a href="terms.html" style="color: #fff; text-decoration: underline; margin-right: 15px;">Privacy Policy</a>
+                    <a href="terms.html" style="color: #fff; text-decoration: underline;">Terms of Service</a>
+                </p>
+            </div>
+        </footer>
+
+    <script src="darkmode.js"></script>
+
+</body>
+</html>

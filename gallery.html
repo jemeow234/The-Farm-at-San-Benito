@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - The Farm at San Benito</title>
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const logoImg = document.querySelector('.logo img');
+        if (!logoImg) return;
+        const parent = logoImg.parentElement;
+        if (parent && parent.tagName.toLowerCase() === 'a') {
+            parent.href = 'index.html';
+            parent.setAttribute('aria-label', 'Home');
+        } else {
+            const a = document.createElement('a');
+            a.href = 'index.html';
+            a.setAttribute('aria-label', 'Home');
+            a.style.display = 'inline-block';
+            parent.replaceChild(a, logoImg);
+            a.appendChild(logoImg);
+        }
+    });
+    </script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* basic layout and theme */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f9;
+            /* reserve space for the fixed header so content doesn't hide under it */
+            padding-top: 90px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            /* header is already inline-styled as fixed; keep the inline style but rest here */
+        }
+
+        header .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        header .logo img {
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #008c4a;
+            margin-top: 60px;
+            margin-bottom: 40px;
+            font-size: 44px;
+        }
+
+        .section-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            max-width: 1600px;
+            margin: 0 auto 80px auto;
+        }
+
+        .section-item {
+            display: flex;
+            flex-direction: row;
+            gap: 30px;
+            margin-bottom: 50px;
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .section-item img {
+            width: 600px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 0;
+        }
+
+        .section-description {
+            padding: 30px;
+            flex: 1;
+            position: relative; /* keep view-details positioned relative to this */
+        }
+
+        .section-description h3 {
+            color: #008c4a;
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+
+        .section-description p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* rate badge and view details button styling using classes so we can override on mobile */
+        .rate-badge {
+            position: absolute;
+            top: 30px;
+            right: 20px;
+            background: #008c4a;
+            padding: 12px 18px;
+            border-radius: 10px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+            font-weight: 800;
+            color: #ffffff;
+            z-index: 10;
+            font-size: 18px;
+            line-height: 1.1;
+            min-width: 180px;
+            text-align: center;
+        }
+
+        .view-details {
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+            display: inline-block;
+            background: #008c4a;
+            color: #fff;
+            padding: 10px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.12);
+            z-index: 10;
+        }
+
+        /* previously existing media rules adjusted to be mobile-friendly */
+        @media(max-width: 1200px) {
+            .section-item {
+                flex-direction: column;
+            }
+
+            .section-item img {
+                width: 100%;
+                height: auto;
+            }
+        }
+
+        @media(max-width: 700px) {
+            .section-item img {
+                height: auto;
+            }
+        }
+
+        /* dark mode */
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+        body.dark-mode header {
+            background-color: #2d2d2d !important;
+            color: #e0e0e0;
+        }
+        body.dark-mode a {
+            color: #64b5f6;
+        }
+        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3 {
+            color: #e0e0e0;
+        }
+        body.dark-mode p {
+            color: #b0b0b0;
+        }
+
+        body.dark-mode .section-item {
+            background: #1a1a1a;
+            transition: transform 0.28s ease, box-shadow 0.28s ease;
+        }
+
+        body.dark-mode .section-item:hover {
+            transform: translateY(-8px);
+            /* soft drop + subtle green glow */
+            box-shadow:
+                0 18px 36px #038d0ee8,
+                0 0 26px 6px #008c4a1a;
+        }
+
+        body.dark-mode .section-description p {
+            color: #fff;
+        }
+        
+        body.dark-mode .section-description h3 {
+            color: #008c4a;
+        }
+
+        /* responsive adjustments specifically for small devices (mobile) -
+           these intentionally do NOT change the nav or the theme button (they remain as is) */
+        @media (max-width: 900px) {
+            /* reduce top padding because header will be more compact on small screens */
+            body { padding-top: 88px; }
+
+            .gallery-section, .section-row {
+                padding: 0 16px;
+            }
+
+            .section-item {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+                margin-bottom: 24px;
+                border-radius: 12px;
+                height: auto !important; /* override any fixed heights */
+                padding-bottom: 12px;
+            }
+
+            /* override inline width/height styles on images */
+            .section-item img {
+                width: 100% !important;
+                height: auto !important;
+                object-fit: cover;
+                border-radius: 8px 8px 0 0;
+            }
+
+            .section-description {
+                padding: 16px;
+            }
+
+            .section-description h3 {
+                font-size: 20px;
+                margin-bottom: 8px;
+            }
+
+            .section-description p {
+                font-size: 15px;
+                line-height: 1.5;
+            }
+
+            /* rate badge becomes smaller and stays readable */
+            .rate-badge {
+                top: 12px;
+                right: 12px;
+                min-width: auto;
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+
+            /* move view details button into the flow under description for easier tapping */
+            .view-details {
+                position: relative !important;
+                right: auto !important;
+                bottom: auto !important;
+                display: inline-block;
+                margin-top: 10px;
+                align-self: flex-end;
+            }
+
+            /* tighten footer spacing */
+            footer {
+                padding: 18px 12px;
+                font-size: 14px;
+            }
+
+            /* headings size */
+            h2 {
+                font-size: 28px;
+                margin-top: 24px;
+            }
+        }
+        :root{
+            --header-height: 68px;
+            --accent-green: #034b09;
+            --light-bg: #fff;
+            --dark-bg: #1a1a1a;
+        }
+
+        /* Dark mode base tweaks */
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: #e0e0e0;
+        }
+        body.dark-mode header {
+            background-color: #2d2d2d !important;
+            color: #e0e0e0;
+        }
+        body.dark-mode a { color: #f0f0f0; }
+        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3 { color: #e0e0e0; }
+        body.dark-mode p { color: #ffffff; }
+
+        /* Header / nav layout */
+        header {
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        .logo { display:flex; align-items:center; }
+        .logo img { height:44px; width:auto; display:block; }
+
+        nav.navbar {
+            display:flex;
+            align-items:center;
+            flex:1;
+            justify-content: center;
+        }
+        nav.navbar ul {
+            list-style:none;
+            display:flex;
+            gap: 18px;
+            margin:0;
+            padding:0;
+            align-items:center;
+        }
+        nav.navbar a {
+            text-decoration:none;
+            color: inherit;
+            font-weight:700;
+            letter-spacing:0.02em;
+        }
+
+        .nav-buttons { margin-left:auto; }
+
+        /* Hamburger (mobile) */
+        .menu-toggle {
+            display: none;
+            background: transparent;
+            border: 0;
+            cursor: pointer;
+            padding: 8px;
+            margin-left: 8px;
+        }
+        .menu-toggle .bar {
+            display:block;
+            width:22px;
+            height:2px;
+            background:#222;
+            margin:4px 0;
+            transition: transform .2s ease, opacity .2s ease;
+        }
+        body.dark-mode .menu-toggle .menu-icon { color:#fff; }
+
+        /* Mobile responsive behavior */
+        @media (max-width: 900px) {
+            /* make header compact */
+            header { padding: 0 12px; gap: 8px; }
+            nav.navbar { justify-content: flex-end; }
+            nav.navbar ul { 
+                display: none; /* hide default list on small screens */
+                position: absolute;
+                top: calc(var(--header-height) + 8px);
+                right: 12px;
+                background: var(--light-bg);
+                border-radius: 8px;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+                flex-direction: column;
+                padding: 10px;
+                min-width: 220px;
+                z-index: 1100;
+            }
+            body.dark-mode nav.navbar ul { background: #222; box-shadow: 0 8px 24px rgba(0,0,0,0.35); }
+
+            nav.navbar ul.show {
+                display:flex;
+            }
+            nav.navbar ul li { padding: 8px 6px; }
+            nav.navbar ul a { display:block; width:100%; }
+
+            .menu-toggle { display:inline-flex; align-items:center; }
+
+            /* collapse nav-buttons into menu (so header stays compact) */
+            .nav-buttons { display:none; }
+        }
+
+        /* Make a few main sections adapt nicely */
+        .hero { padding-top: var(--header-height); min-height: 60vh; background-size:cover; }
+        .about-section { flex-direction: column; gap: 20px; padding: 20px; }
+        @media (min-width: 900px) {
+            .about-section { flex-direction: row; padding: 40px 60px; }
+        }
+
+        /* Ensure virtual-tour button moves on small screens */
+        .virtual-tour-btn { left: 50px; bottom: 80px; }
+        @media (max-width:480px){
+            .virtual-tour-btn{ left: 12px; bottom: 12px; width: 88px; height: 88px; font-size: 11px; }
+        }
+
+        
+    </style>
+
+     <script>
+        // Menu toggle script: waits for DOM and then wires the hamburger to the nav.
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggle = document.getElementById('menuToggle');
+            const navList = document.getElementById('mainNavList');
+
+            if (!toggle || !navList) return;
+
+            // update aria-expanded and show/hide
+            function setOpen(open) {
+                if (open) {
+                    navList.classList.add('show');
+                    toggle.setAttribute('aria-expanded', 'true');
+                    // prevent body scroll when menu open on small screens
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    navList.classList.remove('show');
+                    toggle.setAttribute('aria-expanded', 'false');
+                    document.body.style.overflow = '';
+                }
+            }
+
+            toggle.addEventListener('click', function (e) {
+                const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+                setOpen(!isOpen);
+            });
+
+            // close menu when clicking outside or pressing Escape
+            document.addEventListener('click', function (e) {
+                if (!navList.classList.contains('show')) return;
+                if (toggle.contains(e.target) || navList.contains(e.target)) return;
+                setOpen(false);
+            });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') setOpen(false);
+            });
+
+            // close menu on link click (mobile)
+            navList.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+        });
+    </script>
+</head>
+<body>
+    <header style="position: fixed; top: 0; left: 0; right: 0; width: 100%; z-index: 1000; background-color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+
+        <div class="logo">
+            <img src="images/logo1.png" alt="Resort Logo" style="height:50px;">
+        </div>
+
+        <!-- mobile hamburger -->
+        <button id="menuToggle" class="menu-toggle" aria-controls="mainNavList" aria-expanded="false" aria-label="Toggle navigation"
+            style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); z-index: 1200; width: 44px; height: 44px; background: transparent; border: 0; padding: 8px; color: #222;">
+            <span class="menu-icon" aria-hidden="true" style="font-size:30px; line-height:1; display:inline-block;">≡</span>
+        </button>
+
+        <nav class="navbar" role="navigation" aria-label="Main Navigation">
+            <ul id="mainNavList"> 
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="about.html">ABOUT US</a></li>
+                <li><a href="activities.html">ACTIVITIES</a></li>
+                <li><a href="reviews.html">CUSTOMER REVIEWS</a></li>
+                <li><a href="blogs.html">BLOGS / ARTICLE</a></li>
+                <li><a href="contact.html">CONTACT US</a></li>
+                <li><a href="faqs.html">FAQS</a></li>
+            </ul>
+        </nav>
+        <div class="nav-buttons">
+            <a href="booking.html" class="btn booking-btn">BOOK NOW</a>
+        </div>
+    </header>
+
+    <!-- Floating Dark Mode Button -->
+    <button id="themeButton" class="floating-theme-btn">
+        <span id="themeIcon">🌙</span>
+    </button>
+
+<section class="gallery-section">
+    <h2>Rooms & Rates</h2>
+    
+    <div class="section-item" style="position: relative;">
+        <!-- Top-right rates badge -->
+        <div class="rate-badge">
+            Rates from $150 / night
+        </div>
+
+        <img src="images/residence.jpg" alt="Standard Room" style="width: 50%; height: auto; object-fit: cover;">
+        <div class="section-description">
+            <h3>Standard Room ⭐⭐⭐⭐⭐</h3>
+            <p>✔️ King-size bed for restful, unhurried sleep
+    <br><br>✔️ Large windows with calming views of greenery and mountains
+    <br><br>✔️ Spacious layout with warm, modern interiors
+    <br><br>✔️ Premium amenities for a smooth and comfortable stay
+    <br><br>✔️ Private seating area perfect for relaxing or unwinding
+    <br><br>✔️ Air-conditioned room for a cool, refreshing atmosphere
+    <br><br>✔️ Flat-screen TV and workspace for both leisure and productivity
+    <br>
+    </p>
+
+            <!-- Bottom-right View Details button -->
+            <a href="standard.html" class="view-details">
+                View Details
+            </a>
+        </div>
+    </div>
+
+    <div class="section-item" style="position: relative;">
+        <!-- Top-right rates badge -->
+        <div class="rate-badge">
+            Rates from $200 / night
+        </div>
+
+        <img src="images/deluxe.jpg" alt="Deluxe Room" style="width: 50%; height: auto; object-fit: cover;">
+        <div class="section-description">
+            <h3>Deluxe Room ⭐⭐⭐⭐⭐</h3>
+            <p>✔️ Elegant room design with warm, calming interiors
+<br><br>✔️ Private balcony overlooking lush garden scenery
+<br><br>✔️ Floor-to-ceiling windows that bring in soft, natural light
+<br><br>✔️ Spacious layout ideal for unwinding and gentle routines
+<br><br>✔️ Comfortable seating area for reading or mindful breaks
+<br><br>✔️ Plush beddings crafted for deep, restorative sleep
+<br><br>✔️ Premium amenities to elevate your relaxation experience
+<br>
+</p>
+
+            <a href="deluxe.html" class="view-details">
+                View Details
+            </a>
+        </div>
+    </div>
+
+    <div class="section-item" style="position: relative;">
+        <div class="rate-badge">
+            Rates from $300 / night
+        </div>
+
+        <img src="images/suites.jpg" alt="Suite" style="width: 50%; height: auto; object-fit: cover;">
+        <div class="section-description">
+            <h3>Suite ⭐⭐⭐⭐⭐</h3>
+            <p>✔️ Luxurious suite designed with elegant, modern interiors
+<br><br>✔️ Spacious living area ideal for rest, reflection, or quiet work
+<br><br>✔️ Private balcony surrounded by lush garden views
+<br><br>✔️ Floor-to-ceiling windows that invite gentle natural light
+<br><br>✔️ Plush bedding for deep and uninterrupted relaxation
+<br><br>✔️ Premium amenities for a refined and comfortable stay
+<br><br>✔️ A nature-embraced atmosphere that enhances every moment
+<br>
+</p>
+            <a href="suite.html" class="view-details">
+                View Details
+            </a>
+        </div>
+    </div>
+
+    <div class="section-item" style="position: relative;">
+        <div class="rate-badge">
+            Rates from $500 / night
+        </div>
+
+        <img src="images/villa.jpg" alt="Villa" style="width: 50%; height: auto; object-fit: cover;">
+        <div class="section-description">
+            <h3>Villa ⭐⭐⭐⭐⭐</h3>
+            <p>✔️ Private villa offering full exclusivity and tranquility
+<br><br>✔️ Personal pool for peaceful dips at any hour
+<br><br>✔️ Lush garden enveloping the villa for complete serenity
+<br><br>✔️ Expansive interiors with warm, nature-inspired design
+<br><br>✔️ Generous living spaces ideal for extended relaxation
+<br><br>✔️ High-end amenities for elevated comfort
+<br><br>✔️ A secluded sanctuary perfect for wellness, rest, and renewal
+<br>
+</p>
+            <a href="villa.html" class="view-details">
+                View Details
+            </a>
+        </div>
+    </div>
+
+    <h2>Amenities</h2>
+    
+    <div class="section-item" style="height: auto;">
+        <img src="images/Screenshot 2025-12-02 160632.png" alt="Pools"
+             style="width:1000px; height:500px; object-fit:cover; flex-shrink:0; transform-origin:center; transition:transform .3s ease;"
+             onmouseover="this.style.transform='scale(1.06)';" onmouseout="this.style.transform='scale(1)';">
+        <div class="section-description">
+            <h3>Pools</h3>
+            <p>✔️ Serene pool surrounded by lush greenery
+<br><br>✔️ Lounge beds for restful sunbathing
+<br><br>✔️ Calm atmosphere perfect for quiet dips
+<br><br>✔️ Refreshing space ideal for relaxation and reflection
+</p>
+        </div>
+    </div>
+    
+    <div class="section-item" style="height: auto;">
+        <img src="images/spa.jpg" alt="Spa"
+             style="width:1000px; height:500px; object-fit:cover; flex-shrink:0; transform-origin:center; transition:transform .3s ease;"
+             onmouseover="this.style.transform='scale(1.06)';" onmouseout="this.style.transform='scale(1)';">
+        <div class="section-description">
+            <h3>Healing Sanctuary Spa</h3>
+            <p>✔️ Holistic treatments inspired by natural wellness
+<br><br>✔️ Peaceful therapy rooms set in a garden atmosphere
+<br><br>✔️ Skilled therapists offering rejuvenating rituals
+<br><br>✔️ Calming environment designed for deep healing
+</p>
+        </div>
+    </div>
+
+    <div class="section-item" style="height: auto;">
+        <img src="images/waterfalls.webp" alt="waterfalls"
+             style="width:1000px; height:500px; object-fit:cover; flex-shrink:0; transform-origin:center; transition:transform .3s ease;"
+             onmouseover="this.style.transform='scale(1.06)';" onmouseout="this.style.transform='scale(1)';">
+        <div class="section-description">
+            <h3>Waterfalls Backyard</h3>
+            <p>✔️ Natural-inspired waterfalls for a soothing escape
+<br><br>✔️ Scenic spot perfect for mindful moments
+<br><br>✔️ Gentle water sounds that enhance relaxation
+<br><br>✔️ Ideal area for nature walks and photography
+</p>
+        </div>
+    </div>
+
+    <div class="section-item" style="height: auto;">
+        <img src="images/treatment4.jpg" alt="Gym"
+             style="width:1000px; height:500px; object-fit:cover; flex-shrink:0; transform-origin:center; transition:transform .3s ease;"
+             onmouseover="this.style.transform='scale(1.06)';" onmouseout="this.style.transform='scale(1)';">
+        <div class="section-description">
+            <h3>Gym</h3>
+            <p>✔️ Fully equipped fitness space for all routines
+<br><br>✔️ Clean, modern machines for strength and cardio
+<br><br>✔️ Quiet environment that supports focused workouts
+<br><br>✔️ Complementary towels and hydration station
+</p>
+        </div>
+    </div>
+
+    <div class="section-item" style="height: auto;">
+        <img src="images/hero-food.jpg" alt="Restaurant"
+             style="width:1000px; height:500px; object-fit:cover; flex-shrink:0; transform-origin:center; transition:transform .3s ease;"
+             onmouseover="this.style.transform='scale(1.06)';" onmouseout="this.style.transform='scale(1)';">
+        <div class="section-description">
+            <h3>Restaurant</h3>
+            <p>✔️ Farm-to-table dishes crafted with fresh ingredients
+<br><br>✔️ Nature-view seating for peaceful dining
+<br><br>✔️ Menu designed to support wellness and vitality
+<br><br>✔️ Warm, inviting atmosphere for every meal
+</p>
+        </div>
+    </div>
+</section>
+
+    <footer style="background: #034b09; color: #fff; padding: 30px 0; text-align: center; margin-top: 40px;">
+            <div style="max-width: 1200px; margin: 0 auto;">
+                <p style="margin: 0;">&copy; 2024 The Farm at San Benito. All rights reserved.</p>
+                <p style="margin: 8px 0 0 0; font-size: 0.95em;">
+                    <a href="terms.html" style="color: #fff; text-decoration: underline; margin-right: 15px;">Privacy Policy</a>
+                    <a href="terms.html" style="color: #fff; text-decoration: underline;">Terms of Service</a>
+                </p>
+            </div>
+        </footer>
+
+    <script src="darkmode.js"></script>
+
+</body>
+</html>
